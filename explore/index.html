@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OmniOne — Explore & Align</title>
+<style>
+  :root{
+    --bg:#060d13;--bg2:#0b1a22;--ink:#e9f2f4;--dim:#8fa8ad;--faint:#5c757b;
+    --teal:#22d3c5;--teal-d:#0e7d78;--gold:#e9c46a;--line:rgba(255,255,255,.09);--card:rgba(255,255,255,.035);
+    --ok:#3ddc84;--soon:#7c8aa5;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:radial-gradient(1100px 620px at 50% -8%,#123039 0%,var(--bg2) 45%,var(--bg) 100%);
+    color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;line-height:1.6}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+  h1,h2,h3{line-height:1.15;margin:0 0 .4em;font-weight:700;letter-spacing:-.01em}
+  .serif{font-family:"Cormorant Garamond",Georgia,serif}
+  a{color:var(--teal);text-decoration:none}
+  .eyebrow{font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--teal);font-weight:700}
+  .muted{color:var(--dim)}
+  section{padding:60px 0;border-top:1px solid var(--line)}
+  section:first-of-type{border-top:none}
+  .sec-head{max-width:720px;margin:0 auto 34px;text-align:center}
+  .sec-head h2{font-size:clamp(1.5rem,3.2vw,2.2rem)}
+  .sec-head p{color:var(--dim)}
+
+  /* hero */
+  .hero{text-align:center;padding:110px 0 64px}
+  .hero h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:800;background:linear-gradient(180deg,#fff,#a9d8d3 75%,#5fa39c);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero .lede{max-width:660px;margin:16px auto 0;font-size:1.15rem;color:#cfe0e2}
+  .glow{height:1px;width:170px;margin:30px auto 0;background:linear-gradient(90deg,transparent,var(--teal),transparent);box-shadow:0 0 22px var(--teal)}
+
+  /* switchboard */
+  .board{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:820px;margin:0 auto}
+  .node{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;text-align:center;transition:.2s}
+  .node:hover{border-color:rgba(34,211,197,.4);transform:translateY(-2px)}
+  .node .ic{font-size:1.5rem;display:block;margin-bottom:8px}
+  .node h3{font-size:1rem;margin:0 0 4px}
+  .node p{font-size:.82rem;color:var(--dim);margin:0}
+  .node.hub{background:linear-gradient(180deg,rgba(34,211,197,.14),rgba(34,211,197,.03));border-color:rgba(34,211,197,.5);box-shadow:0 0 40px rgba(34,211,197,.12)}
+  .node.hub h3{color:var(--teal)}
+  .node.decide{border-color:rgba(233,196,106,.4)}
+  .node.decide h3{color:var(--gold)}
+
+  /* demo cards */
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .demo{display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;transition:.2s;color:var(--ink)}
+  .demo:hover{border-color:rgba(34,211,197,.4);transform:translateY(-2px)}
+  .demo .tag{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;padding:2px 8px;border-radius:6px;display:inline-block;margin-bottom:10px}
+  .t-live{background:rgba(61,220,132,.15);color:#8ff0b6}
+  .t-soon{background:rgba(124,138,165,.16);color:#b6c2d6}
+  .demo h3{font-size:1.1rem;margin:0 0 6px}
+  .demo p{font-size:.9rem;color:var(--dim);margin:0}
+  .demo .go{margin-top:12px;font-size:.85rem;color:var(--teal);font-weight:600}
+
+  /* path steps */
+  .steps{counter-reset:s;max-width:760px;margin:0 auto;display:grid;gap:14px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;position:relative;padding-left:64px}
+  .step::before{counter-increment:s;content:counter(s);position:absolute;left:20px;top:20px;width:28px;height:28px;border-radius:50%;background:rgba(34,211,197,.15);color:var(--teal);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:.9rem;border:1px solid rgba(34,211,197,.4)}
+  .step h3{font-size:1.05rem;margin:0 0 4px}
+  .step h3 a{color:inherit}
+  .step h3 a:hover{color:var(--teal)}
+  .step p{margin:0;color:var(--dim);font-size:.92rem}
+  .step ul{margin:8px 0 0;padding-left:18px;color:var(--dim);font-size:.86rem}
+  .step li{margin-bottom:3px}
+  .step .open{display:inline-block;margin-top:10px;font-size:.82rem;color:var(--teal);font-weight:600}
+
+  .ask{max-width:760px;margin:0 auto;background:linear-gradient(180deg,rgba(233,196,106,.05),transparent);border:1px solid rgba(233,196,106,.22);border-radius:18px;padding:30px}
+  .ask h3{color:#f3e6c4;font-size:1.4rem}
+  .ask p{color:#dbe6e7}
+  .pill{display:inline-block;background:rgba(34,211,197,.1);border:1px solid rgba(34,211,197,.3);color:#bff0ea;border-radius:999px;padding:4px 12px;font-size:.8rem;margin:4px 4px 0 0}
+
+  /* documents */
+  .docs{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:820px;margin:0 auto}
+  .doc{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;color:var(--ink);transition:.2s}
+  .doc:hover{border-color:rgba(34,211,197,.4);transform:translateY(-2px)}
+  .doc .di{font-size:1.15rem}
+  .doc h3{font-size:.98rem;margin:0 0 2px}
+  .doc p{font-size:.8rem;color:var(--dim);margin:0}
+
+  footer{padding:44px 0 64px;text-align:center;color:var(--faint);font-size:.82rem;border-top:1px solid var(--line)}
+  .reveal{opacity:0;transform:translateY(18px);transition:.7s}
+  .reveal.in{opacity:1;transform:none}
+  @media(max-width:760px){.board{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.docs{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">OmniOne · a project of Green Earth Vision</div>
+    <h1 class="serif">A working alternative</h1>
+    <p class="lede">Not a critique of the old system — a new community operating system for how organizations govern, decide, and share value. Built so no one can capture it. Explore it below, and let's see if we align.</p>
+    <div class="glow"></div>
+  </div>
+</div>
+
+<!-- SWITCHBOARD -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">The switchboard</div>
+      <h2 class="serif">What a community operating system actually is</h2>
+      <p>Not an app — a set of parts that work together. Here's the whole thing on one board; the piece a consortium has to align on is highlighted.</p>
+    </div>
+    <div class="board">
+      <div class="node reveal"><span class="ic">🌱</span><h3>ETHOS</h3><p>The self-governing unit — no owner, no boss</p></div>
+      <div class="node hub reveal"><span class="ic">◎</span><h3>NEOS</h3><p>The operating system the parts run on</p></div>
+      <div class="node decide reveal"><span class="ic">⚖️</span><h3>ACT — decisions</h3><p>How choices are made, without hierarchy</p></div>
+      <div class="node reveal"><span class="ic">🔁</span><h3>Economy</h3><p>Contribution + access — value that circulates, not extracts</p></div>
+      <div class="node reveal"><span class="ic">🛡️</span><h3>Anti-capture</h3><p>Capital buys no control; stewardship, not ownership</p></div>
+      <div class="node reveal"><span class="ic">📈</span><h3>New GDP</h3><p>A new measure of thriving, beyond GDP</p></div>
+      <div class="node reveal"><span class="ic">🚪</span><h3>Nexus</h3><p>The open door — anyone can enter</p></div>
+      <div class="node reveal"><span class="ic">🏛️</span><h3>NEOS Den</h3><p>Where members actually govern &amp; decide</p></div>
+      <div class="node reveal"><span class="ic">🤝</span><h3>Matching</h3><p>People matched into aligned teams</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMOS -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">See it for yourself</div>
+      <h2 class="serif">Live pieces you can touch</h2>
+      <p>Real, running demos — no account needed. The one that matters most for a consortium is the decision process.</p>
+    </div>
+    <div class="cards">
+      <a class="demo reveal" href="../act/" style="border-color:rgba(233,196,106,.4)">
+        <span class="tag t-live" style="background:rgba(233,196,106,.16);color:#f3e6c4">Live — the one that matters</span>
+        <h3>⚖️ ACT Resolution</h3>
+        <p>An interactive walk-through of how a decision reaches resolution — proceed · defer · re-scope · run-parallel · park. This is the process we'd propose you adopt for shared decisions.</p>
+        <div class="go" style="color:var(--gold)">Open the demo →</div>
+      </a>
+      <a class="demo reveal" href="../os-readiness/">
+        <span class="tag t-live">Live</span>
+        <h3>📊 OS-Readiness assessment</h3>
+        <p>How we score whether an organization is built to last — 21 weighted, evidence-graded criteria. Relevant to checking fit.</p>
+        <div class="go">Open the assessment →</div>
+      </a>
+      <a class="demo reveal" href="https://beam-readiness-gev.netlify.app" target="_blank" rel="noopener">
+        <span class="tag t-live">Live</span>
+        <h3>🧭 BEAM — full readiness app</h3>
+        <p>The deeper version: feed in an organization's own documents and get an evidence-graded structural score, with the working shown — plus matches to complementary orgs.</p>
+        <div class="go">Open BEAM →</div>
+      </a>
+      <a class="demo reveal" href="../cayce/">
+        <span class="tag t-live">Live</span>
+        <h3>🌀 The 2027 vision</h3>
+        <p>Why a new system now — collapse as rebirth, and what we've built to meet it.</p>
+        <div class="go">Explore →</div>
+      </a>
+      <a class="demo reveal" href="https://fastidious-moxie-355ec2.netlify.app" target="_blank" rel="noopener">
+        <span class="tag t-live">Live</span>
+        <h3>🎛️ Alignment widget</h3>
+        <p>Toggle the 21 criteria and watch alignment shift — a hands-on feel for what the system measures.</p>
+        <div class="go">Try it →</div>
+      </a>
+      <a class="demo reveal" href="https://www.youtube.com/watch?v=0ALgPS1p1zk" target="_blank" rel="noopener">
+        <span class="tag t-live">Live</span>
+        <h3>📈 New GDP</h3>
+        <p>A new measure of thriving beyond GDP — the video explainer.</p>
+        <div class="go">Watch →</div>
+      </a>
+      <a class="demo reveal" href="https://omnione.notion.site/New-GDP-12ed14367d5f80c68a63e4d4cf5a72c3" target="_blank" rel="noopener">
+        <span class="tag t-live">Live</span>
+        <h3>📄 New GDP — read more</h3>
+        <p>The overview page — the reasoning and the math behind the measure.</p>
+        <div class="go">Read →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- THE PATH -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">If we might combine</div>
+      <h2 class="serif">A simple path to find out if we fit</h2>
+      <p>We build toward the same architecture on purpose — so apps can link and systems can align over time, <strong>without merging or losing your independence.</strong> Here's how to check the foundation, step by step, no commitment beyond each step. A deeper step — a new-paradigm consortium (coop/nonprofit, ETHOS- and Teal-approved) — stays an optional future door.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <h3><a href="../brief/">Read the brief</a></h3>
+        <p>Who we are, what we've built, and the modular architecture — and the one thing a merge has to align on: <strong>how humans decide together.</strong> Our proposal is ACT (above) — unless you have something provably better, in which case let's compare, criteria and all.</p>
+        <a class="open" href="../brief/">Open the brief →</a>
+      </div>
+      <div class="step reveal">
+        <h3><a href="../survey/">Take the alignment survey (~10 questions)</a></h3>
+        <p>Honest short answers. It surfaces the real overlaps and deal-breakers early:</p>
+        <ul>
+          <li>Purpose &amp; values · regeneration a core goal or nice-to-have?</li>
+          <li>Ownership &amp; capital — can it be bought? does capital carry control? where does surplus go?</li>
+          <li><strong>How you decide</strong> — would you adopt ACT for shared decisions, or propose better?</li>
+          <li>Authority · economics · anti-capture · conflict · goals · deal-breakers</li>
+        </ul>
+        <a class="open" href="../survey/">Open the survey →</a>
+      </div>
+      <div class="step reveal">
+        <h3><a href="../gateway/">Walk the resource-share gateway (yes / no / discuss)</a></h3>
+        <p>The terms for anything either side contributes — mirroring the anti-capture licensing we already commit to (stewardship not ownership · capital buys no control · intellectual commons · revocable on breach · symmetric). Staged so your human consents knowingly:</p>
+        <ul>
+          <li><strong>Gate 1</strong> — accept the base terms in principle?</li>
+          <li><strong>Gate 2</strong> — what would you contribute; what's off the table?</li>
+          <li><strong>Gate 3</strong> — ACT for shared decisions, or a better method?</li>
+          <li><strong>Gate 4</strong> — only if 1–3 are yes: formalize with counsel.</li>
+        </ul>
+        <a class="open" href="../gateway/">Open the gateway →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ASK -->
+<section>
+  <div class="wrap">
+    <div class="ask reveal">
+      <div class="eyebrow">The ask</div>
+      <h3 class="serif">Look, converse, and tell us the best ideas.</h3>
+      <p>Point your AI (and your human) at this. We'd genuinely love the critique — poke holes, suggest better patterns, especially on the modular architecture and the value-based decision-resolution model. Then, if the foundation fits, the survey and the gateway are the honest way to build a consortium that lasts.</p>
+      <div>
+        <span class="pill">Critique the modular approach</span>
+        <span class="pill">Rethink the resolution model</span>
+        <span class="pill">Anything you'd do differently</span>
+      </div>
+      <p style="margin-top:18px;font-size:.9rem;color:var(--dim)">There's a ready-to-paste <a href="../ai-onboard/">AI-to-AI onboarding prompt</a> that walks your AI through the whole thing. Ask us for specifics — the module standard, the criteria instrument, the agreements, the ACT method — and we'll share.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DOCUMENTS -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">The documents</div>
+      <h2 class="serif">Everything, in one place</h2>
+      <p>The full set a partner (and their AI) can read — all on this one site.</p>
+    </div>
+    <div class="docs">
+      <a class="doc reveal" href="../brief/"><span class="di">📄</span><div><h3>Collaborator brief</h3><p>Who we are, what we've built, the modular architecture.</p></div></a>
+      <a class="doc reveal" href="../pathway/"><span class="di">🧭</span><div><h3>Alignment &amp; ecosystem pathway</h3><p>Curious → aligned → (optional) consortium — staged, AI-first.</p></div></a>
+      <a class="doc reveal" href="../survey/"><span class="di">📝</span><div><h3>Alignment survey</h3><p>~10 questions that surface real overlaps and deal-breakers.</p></div></a>
+      <a class="doc reveal" href="../gateway/"><span class="di">🔐</span><div><h3>Resource-share &amp; licensing gateway</h3><p>Staged, opt-in terms for anything either side contributes.</p></div></a>
+      <a class="doc reveal" href="../ai-onboard/"><span class="di">🤖</span><div><h3>AI-to-AI onboarding prompt</h3><p>Paste it to your AI — it guides your human through it all.</p></div></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>OmniOne · New Earth Operating System · a project of Green Earth Vision.<br>Built toward the same architecture — so we can become one when it's right.</p>
+  </div>
+</footer>
+
+<script>
+(function(){const els=document.querySelectorAll('.reveal');
+  const io=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:.12});
+  els.forEach(el=>io.observe(el));})();
+</script>
+</body>
+</html>

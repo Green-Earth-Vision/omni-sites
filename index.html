@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OmniOne — Explore & Align</title>
+<style>
+  :root{
+    --bg:#060d13;--bg2:#0b1a22;--ink:#e9f2f4;--dim:#8fa8ad;--faint:#5c757b;
+    --teal:#22d3c5;--gold:#e9c46a;--line:rgba(255,255,255,.09);--card:rgba(255,255,255,.035);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;min-height:100vh;background:radial-gradient(1100px 640px at 50% -6%,#123039 0%,var(--bg2) 46%,var(--bg) 100%) fixed;
+    color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;line-height:1.6}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px}
+  a{color:var(--teal);text-decoration:none}
+  .serif{font-family:"Cormorant Garamond",Georgia,serif}
+  .eyebrow{font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--teal);font-weight:700}
+
+  .hero{text-align:center;padding:92px 0 40px}
+  .hero h1{font-size:clamp(2.3rem,6vw,4rem);font-weight:800;margin:.25em 0 0;
+    background:linear-gradient(180deg,#fff,#a9d8d3 75%,#5fa39c);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero .lede{max-width:640px;margin:18px auto 0;font-size:1.12rem;color:#cfe0e2}
+  .glow{height:1px;width:160px;margin:26px auto 0;background:linear-gradient(90deg,transparent,var(--teal),transparent);box-shadow:0 0 22px var(--teal)}
+
+  .block{padding:26px 0 12px}
+  .block-head{text-align:center;max-width:640px;margin:0 auto 22px}
+  .block-head h2{font-size:clamp(1.4rem,3vw,2rem);margin:.1em 0 .25em}
+  .block-head p{color:var(--dim);margin:0;font-size:.98rem}
+
+  /* primary action cards */
+  .primary{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .act{display:block;background:linear-gradient(180deg,rgba(34,211,197,.12),rgba(34,211,197,.03));
+    border:1px solid rgba(34,211,197,.42);border-radius:18px;padding:28px 26px;color:var(--ink);transition:.2s;box-shadow:0 0 40px rgba(34,211,197,.08)}
+  .act:hover{border-color:rgba(34,211,197,.7);transform:translateY(-3px)}
+  .act .ic{font-size:1.9rem;display:block;margin-bottom:10px}
+  .act h3{font-size:1.22rem;margin:0 0 8px;color:#fff}
+  .act p{font-size:.92rem;color:var(--dim);margin:0}
+  .act .go{margin-top:16px;font-size:.92rem;color:var(--teal);font-weight:700}
+
+  /* secondary buttons */
+  .secondary{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+  .btn{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:18px 20px;color:var(--ink);transition:.2s}
+  .btn:hover{border-color:rgba(34,211,197,.4);transform:translateY(-2px)}
+  .btn .ic{font-size:1.3rem}
+  .btn h3{font-size:1rem;margin:0 0 3px}
+  .btn p{font-size:.82rem;color:var(--dim);margin:0}
+  .btn .go{margin-top:8px;font-size:.8rem;color:var(--teal);font-weight:600}
+
+  footer{padding:52px 0 60px;text-align:center;color:var(--faint);font-size:.82rem;margin-top:30px;border-top:1px solid var(--line)}
+  @media(max-width:720px){.primary,.secondary{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">OmniOne · a project of Green Earth Vision</div>
+    <h1 class="serif">A new community operating system</h1>
+    <p class="lede">For organizations exploring whether we align. Point your AI at ours — it scans our whole system, checks it against yours, and shows where our goals already line up. If it fits, there's an optional path toward a shared <strong>consortium</strong>.</p>
+    <div class="glow"></div>
+  </div>
+</div>
+
+<!-- PRIMARY: the first package -->
+<section class="block">
+  <div class="wrap">
+    <div class="block-head">
+      <div class="eyebrow">Start here</div>
+      <h2 class="serif">Scan our system, share the architecture</h2>
+      <p>Two ways to see how our systems fit — automatically, before anyone commits to anything.</p>
+    </div>
+    <div class="primary">
+      <a class="act" href="ai-onboard/">
+        <span class="ic">🤖</span>
+        <h3>Point your AI at ours</h3>
+        <p>Paste our AI-to-AI onboarding prompt into your own AI. It reads our architecture, looks through your materials — and asks you where it can't find something — then walks you through where we align, one step at a time.</p>
+        <div class="go">Get the AI prompt →</div>
+      </a>
+      <a class="act" href="https://beam-readiness-gev.netlify.app" target="_blank" rel="noopener">
+        <span class="ic">🧭</span>
+        <h3>Run the readiness scan · BEAM</h3>
+        <p>Feed your organization's own documents in and get an evidence-graded structural readiness score — with the full working shown, and matches to complementary strengths.</p>
+        <div class="go">Open BEAM →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SECONDARY -->
+<section class="block">
+  <div class="wrap">
+    <div class="secondary">
+      <a class="btn" href="https://app.tribematch.org" target="_blank" rel="noopener">
+        <span class="ic">⚖️</span>
+        <div>
+          <h3>See if we align</h3>
+          <p>Take the OmniOne alignment test — the human one. It surfaces, automatically, where our goals line up now and over the long range.</p>
+          <div class="go">Take the test →</div>
+        </div>
+      </a>
+      <a class="btn" href="explore/">
+        <span class="ic">🌀</span>
+        <div>
+          <h3>Explore the whole system</h3>
+          <p>The full picture — the operating system, the live demos, and the vision: the economy, access, digital IDs, and the deeper docs.</p>
+          <div class="go">Explore →</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>OmniOne · New Earth Operating System · a project of Green Earth Vision.<br>Built toward the same architecture — so aligned systems can connect when it's right.</p>
+  </div>
+</footer>
+
+</body>
+</html>

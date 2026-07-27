@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OS Readiness Assessment — working demo</title>
+<style>
+:root{--bg:#0f1115;--panel:#171a21;--line:#252a34;--tx:#e6e8ec;--dim:#9aa3b2;--a:#3ddc97;--b:#6fb3ff;--c:#ffb454;--d:#ff6b6b;--acc:#8b7fff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:24px}
+.wrap{max-width:1180px;margin:0 auto}
+h1{font-size:22px;margin:0 0 4px}
+.sub{color:var(--dim);font-size:14px;margin-bottom:20px}
+.head{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:8px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+.card .lbl{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.card .val{font-size:34px;font-weight:700;line-height:1}
+.card .note{font-size:12px;color:var(--dim);margin-top:6px}
+.gap{background:#2a1d1d;border-color:#5a2d2d}
+.bar{height:8px;background:#20242d;border-radius:99px;overflow:hidden;margin-top:10px}
+.bar i{display:block;height:100%;border-radius:99px}
+.warn{background:#2a1d1d;border:1px solid #5a2d2d;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px;color:#ffb4b4;display:none}
+.warn.on{display:block}
+table{width:100%;border-collapse:collapse;margin-top:16px;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);padding:10px 12px;border-bottom:1px solid var(--line);font-weight:600}
+td{padding:9px 12px;border-bottom:1px solid #1e222a;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.nm{font-size:13px}
+.w{color:var(--dim);font-size:12px;font-variant-numeric:tabular-nums}
+input[type=range]{width:110px;accent-color:var(--acc)}
+select{background:#20242d;color:var(--tx);border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-size:12px}
+.num{font-variant-numeric:tabular-nums;font-size:13px;font-weight:600}
+.tA{color:var(--a)}.tB{color:var(--b)}.tC{color:var(--c)}.tD{color:var(--d)}
+.flag{font-size:11px;padding:2px 7px;border-radius:99px;white-space:nowrap}
+.fC{background:#3a2a12;color:var(--c)}.fD{background:#3a1818;color:var(--d)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--dim);margin:14px 0 0}
+.legend b{color:var(--tx)}
+.ctl{display:flex;gap:8px;margin:16px 0 0;flex-wrap:wrap}
+button{background:#20242d;color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer}
+button:hover{border-color:var(--acc)}
+.demo{background:#1a1f2e;border:1px solid #2d3550;border-radius:10px;padding:14px 16px;margin-bottom:18px;font-size:13px;color:#c5cbe0}
+</style>
+</head>
+<body><div class="wrap">
+<h1>OS Readiness Assessment — working demo</h1>
+<div class="sub">21 criteria · weights total 1,879 · spec v1.0 · this runs the real formula</div>
+
+<div class="demo"><b>What to try:</b> set the rubric bands high, then flip the evidence column to <span class="tC">C — asserted only</span>. The score falls. <b>There is no second number and nothing to argue about</b> — saying you do something, without an artifact, simply scores low. Every row shows its exact contribution, so anyone can recompute the total and check us.</div>
+
+<div class="head">
+  <div class="card"><div class="lbl">Score</div><div class="val tA" id="verified">—</div><div class="note">weighted across 21 criteria</div><div class="bar"><i id="bV" style="background:var(--a)"></i></div></div>
+  <div class="card"><div class="lbl">Confidence</div><div class="val" id="conf">—</div><div class="note">% of weight on independently verifiable evidence</div><div class="bar"><i id="bF" style="background:var(--b)"></i></div></div>
+  <div class="card"><div class="lbl">Evidence mix</div><div class="val" style="font-size:20px" id="mix">—</div><div class="note">criteria by tier</div></div>
+  <div class="card"><div class="lbl">Weighted total</div><div class="val" style="font-size:20px" id="work">—</div><div class="note">Σ(weight × score) ÷ 1,879</div></div>
+</div>
+
+<div class="warn" id="warn"></div>
+
+<div class="ctl">
+  <button onclick="preset('honest')">Well-documented org</button>
+  <button onclick="preset('talker')">All talk, no artifacts</button>
+  <button onclick="preset('mixed')">Realistic mix</button>
+  <button onclick="preset('omnione')">Roughly where OmniOne sits</button>
+</div>
+
+<div class="legend">
+  <span><b class="tA">A</b> independently verifiable ×1.00</span>
+  <span><b class="tB">B</b> internal artifact shown ×0.85</span>
+  <span><b class="tC">C</b> asserted only ×0.50, capped 50</span>
+  <span><b class="tD">D</b> vague / non-responsive ×0</span>
+</div>
+
+<table>
+<thead><tr><th>#</th><th>Criterion</th><th class="w">Wt</th><th>Rubric band</th><th>Evidence</th><th>Score</th><th class="w">Contribution</th><th></th></tr></thead>
+<tbody id="rows"></tbody>
+</table>
+
+<div class="sub" style="margin-top:18px">Instrument only — this scores <i>any</i> organization. OmniOne's own current readings live in <code>matrix.md</code>, not here.</div>
+</div>
+
+<script>
+const T={A:{m:1.0,cap:100},B:{m:0.85,cap:90},C:{m:0.5,cap:50},D:{m:0,cap:0}};
+const C=[
+[1,"Clear operating purpose and scope",100],[2,"Safe exit and voluntary participation",99],
+[3,"Scoped, revocable authority",98],[4,"Decision process without domination",97],
+[5,"Failure containment and dissolution",96],[6,"Transparent memory and auditability",95],
+[7,"Capital cannot become control",94],[8,"Explicit agreements",93],
+[9,"Adaptive feedback loops",92],[21,"Proportional fairness",91],
+[10,"Role clarity and succession",90],[11,"Economic viability",89],
+[12,"Conflict repair pathways",88],[13,"Legal compatibility",87],
+[14,"Pluralism, non-ideological",86],[15,"Security of access and treasury",85],
+[16,"Interoperability",83],[17,"Commons stewardship",82],
+[18,"Onboarding and transmission",80],[19,"Drift metrics (non-gameable)",78],
+[20,"Periodic structural review",76]];
+const S={};
+C.forEach(c=>S[c[0]]={claimed:70,tier:"B"});
+
+function draw(){
+  document.getElementById('rows').innerHTML=C.map(([id,nm,w])=>{
+    const s=S[id],t=T[s.tier],v=Math.min(s.claimed,t.cap)*t.m;
+    const fl=s.tier==="C"?'<span class="flag fC">not hard evidence</span>':s.tier==="D"?'<span class="flag fD">non-responsive</span>':'';
+    return `<tr><td class="w">${id}</td><td class="nm">${nm}</td><td class="w">${w}</td>
+    <td><input type="range" min="0" max="100" value="${s.claimed}" oninput="upd(${id},'claimed',+this.value)"><span class="num" style="margin-left:8px">${s.claimed}</span></td>
+    <td><select onchange="upd(${id},'tier',this.value)">${["A","B","C","D"].map(k=>`<option value="${k}" ${k===s.tier?"selected":""}>${k}</option>`).join("")}</select></td>
+    <td class="num t${s.tier}">${v.toFixed(0)}</td><td class="w">${(w*v).toLocaleString(undefined,{maximumFractionDigits:0})}</td><td>${fl}</td></tr>`}).join("");
+  calc();
+}
+function upd(id,k,v){S[id][k]=v;draw()}
+function calc(){
+  let W=0,cl=0,ve=0,fA=0,d={A:0,B:0,C:0,D:0};
+  C.forEach(([id,nm,w])=>{const s=S[id],t=T[s.tier];W+=w;cl+=w*s.claimed;
+    ve+=w*Math.min(s.claimed,t.cap)*t.m;if(s.tier==="A")fA+=w;d[s.tier]++});
+  const v=ve/W,f=fA/W*100;
+  document.getElementById('verified').textContent=v.toFixed(0);
+  document.getElementById('conf').textContent=f.toFixed(0)+"%";
+  document.getElementById('mix').innerHTML=`<span class="tA">${d.A}A</span> <span class="tB">${d.B}B</span> <span class="tC">${d.C}C</span> <span class="tD">${d.D}D</span>`;
+  document.getElementById('work').textContent=Math.round(ve).toLocaleString()+" ÷ 1,879";
+  document.getElementById('bV').style.width=v+"%";
+  document.getElementById('bF').style.width=f+"%";
+  const w=document.getElementById('warn');let m=[];
+  if(d.C)m.push(`<b>${d.C} criteria rest on assertion with no artifact</b> — flagged in the output as not hard evidence, capped at 50 before the multiplier.`);
+  if(d.D)m.push(`${d.D} criteria are vague or non-responsive and score zero.`);
+  if(f<25)m.push(`Confidence ${f.toFixed(0)}% — almost nothing here is independently checkable without this organization's cooperation.`);
+  const spf=C.filter(([id,nm,wt])=>{const s=S[id],t=T[s.tier];return wt>90&&Math.min(s.claimed,t.cap)*t.m<50});
+  if(spf.length)m.push(`${spf.length} high-weight criteria score under 50: <b>${spf.map(x=>x[1]).join(", ")}</b>.`);
+  w.innerHTML=m.join("<br>");w.className=m.length?"warn on":"warn";
+}
+function preset(k){
+  C.forEach(([id,nm,w])=>{const s=S[id];
+    if(k==="honest"){s.claimed=82;s.tier=w>=90?"A":"B"}
+    if(k==="talker"){s.claimed=92;s.tier="C"}
+    if(k==="mixed"){s.claimed=[60,70,75,85][id%4];s.tier=["A","B","B","C","D"][id%5]}
+    if(k==="omnione"){const m={1:84,2:87,3:84,4:87,5:80,6:79,7:84,8:85,9:77,21:68,10:76,11:71,12:81,13:68,14:86,15:58,16:65,17:75,18:80,19:46,20:76};
+      s.claimed=m[id];s.tier=id===19?"C":(id===15||id===16?"C":"B")}});
+  draw();
+}
+preset('mixed');
+</script>
+</body></html>

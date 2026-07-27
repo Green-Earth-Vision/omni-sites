@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ACT Resolution — align decisions to your values</title>
+<style>
+  /* ===== ACT Resolution — standalone Module ================================
+     Value-based decision resolution as a value wheel.
+     9 canon VALUE CLUSTERS = the spokes. 3 rings = perspectives on the same
+     clusters: inner = You · middle = Ecosystem · outer = World.
+     Rate whether each option aligns, from each perspective → a ranking.
+     Theme: OmniOne/NEOS teal family. Self-contained. Method = ACT (canon/01).
+     ======================================================================= */
+  :root{
+    --bg:#0a1620; --bg2:#0d1e2b; --panel:#102634; --panel2:#0e2130;
+    --line:#1c3a4d; --line2:#25506a;
+    --ink:#e8f4f8; --ink-dim:#a7c4d2; --ink-faint:#6f93a4;
+    --teal:#38e1c8; --teal-deep:#1fa8a0; --blue:#4aa8ff; --blue-deep:#2b6fb0;
+    --gold:#d9b46a; --red:#ff6b6b; --no:#3a5568;
+    --ring-me:#38e1c8; --ring-eco:#4aa8ff; --ring-world:#c9a3ff;
+    --radius:16px; --radius-sm:10px;
+    --shadow:0 10px 40px rgba(0,0,0,.45);
+    --glow:0 0 22px rgba(56,225,200,.28);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    background:
+      radial-gradient(1100px 620px at 78% -8%, rgba(74,168,255,.10), transparent 60%),
+      radial-gradient(900px 520px at 8% 108%, rgba(56,225,200,.10), transparent 60%),
+      var(--bg);
+    color:var(--ink); min-height:100vh; line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:22px 20px 72px}
+  .appbar{display:flex;align-items:center;gap:12px;padding:6px 2px 16px}
+  .logo{display:flex;align-items:center;gap:11px;font-weight:700}
+  .mark{width:34px;height:34px;border-radius:9px;position:relative;flex:none;
+    background:linear-gradient(150deg,var(--teal-deep),var(--blue-deep));box-shadow:var(--glow)}
+  .mark::before{content:"";position:absolute;inset:6px;border-radius:5px;border:1.5px solid rgba(232,244,248,.85);
+    border-top-color:var(--teal);border-right-color:var(--teal);transform:rotate(45deg)}
+  .logo b{font-size:16px}
+  .logo span{color:var(--ink-faint);font-size:12.5px;font-weight:500;border-left:1px solid var(--line2);padding-left:12px;margin-left:2px}
+  .canon-tag{margin-left:auto;font-size:11px;color:var(--ink-faint);border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+  .canon-tag b{color:var(--teal);font-weight:600}
+
+  .panel{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;position:relative;overflow:hidden}
+  .panel::after{content:"";position:absolute;left:0;right:0;top:0;height:1px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.5}
+  .view{display:none} .view.active{display:block;animation:rise .4s ease both}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:600;margin:0 0 8px}
+  h1{font-family:'Montserrat',Inter,sans-serif;font-size:25px;margin:0 0 10px;letter-spacing:-.01em}
+  h2{font-family:'Montserrat',Inter,sans-serif;font-size:20px;margin:0 0 8px}
+  p.lead{color:var(--ink-dim);margin:0 0 16px;font-size:15px}
+  .hint{color:var(--ink-faint);font-size:13px;margin:6px 0 0}
+
+  label.f{display:block;font-size:13px;color:var(--ink-dim);margin:16px 0 6px;font-weight:500}
+  input[type=text],textarea{width:100%;background:var(--bg2);color:var(--ink);border:1px solid var(--line2);
+    border-radius:var(--radius-sm);padding:11px 12px;font:inherit;font-size:14px;outline:none;transition:.2s}
+  textarea{min-height:56px;resize:vertical}
+  input:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(56,225,200,.14)}
+  ::placeholder{color:var(--ink-faint)}
+  .rows{display:flex;flex-direction:column;gap:9px;margin-top:4px}
+  .row{display:flex;gap:9px;align-items:flex-start}
+  .row input.lbl{flex:0 0 30%} .row input.def{flex:1}
+  .icon-btn{flex:none;width:36px;height:42px;border-radius:10px;border:1px solid var(--line2);
+    background:var(--bg2);color:var(--ink-dim);font-size:17px;cursor:pointer;transition:.2s}
+  .icon-btn:hover{border-color:var(--blue);color:var(--blue)}
+  .add{margin-top:10px;font-size:13px;color:var(--teal);background:none;border:1px dashed var(--line2);
+    border-radius:10px;padding:8px 13px;cursor:pointer;transition:.2s}
+  .add:hover{border-color:var(--teal);box-shadow:var(--glow)}
+  .ring-note{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:14px;font-size:12.5px;color:var(--ink-dim);
+    display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+  .ring-note .p{display:flex;align-items:center;gap:7px}
+  .ring-note .d{width:11px;height:11px;border-radius:50%}
+
+  .btn{font:inherit;font-size:14.5px;font-weight:600;border-radius:12px;padding:11px 20px;cursor:pointer;
+    border:1px solid transparent;transition:.2s;letter-spacing:.2px}
+  .btn.primary{background:linear-gradient(160deg,var(--teal-deep),var(--teal));color:#052027;box-shadow:var(--glow)}
+  .btn.primary:hover{filter:brightness(1.07);transform:translateY(-1px)}
+  .btn.ghost{background:transparent;border-color:var(--line2);color:var(--ink-dim)}
+  .btn.ghost:hover{border-color:var(--ink-dim);color:var(--ink)}
+  .btn.danger{background:transparent;border-color:rgba(255,107,107,.5);color:var(--red)}
+  .btn.danger:hover{border-color:var(--red);box-shadow:0 0 18px rgba(255,107,107,.25)}
+  .btn:disabled{opacity:.4;cursor:not-allowed;transform:none;filter:none}
+  .actions{display:flex;gap:12px;margin-top:24px;align-items:center;flex-wrap:wrap}
+  .spacer{flex:1}
+
+  .demo-banner{border:1px solid var(--line2);border-radius:14px;padding:16px 18px;margin-bottom:18px;
+    background:linear-gradient(180deg,rgba(56,225,200,.07),rgba(74,168,255,.03));display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  .demo-banner .txt{flex:1;min-width:260px}
+  .demo-banner .badge{display:inline-block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#052027;
+    background:var(--gold);border-radius:5px;padding:2px 8px;font-weight:700;margin-bottom:6px}
+  .demo-banner h2{margin:0 0 4px;font-size:18px}
+  .demo-banner p{margin:0;color:var(--ink-dim);font-size:13.5px}
+  .demo-banner .steps{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap}
+  .demo-banner .step{font-size:12px;color:var(--ink-faint);display:flex;align-items:center;gap:6px}
+  .demo-banner .step b{color:var(--teal);font-size:12px}
+
+  .stage{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:start}
+  @media(max-width:860px){.stage{grid-template-columns:1fr}}
+  .wheel-col{display:flex;flex-direction:column;align-items:center}
+  .opt-tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
+  .opt-tab{border:1px solid var(--line2);background:var(--bg2);color:var(--ink-dim);border-radius:999px;
+    padding:8px 15px;font-size:13.5px;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:8px}
+  .opt-tab .mini{font-variant-numeric:tabular-nums;font-size:11.5px;color:var(--ink-faint)}
+  .opt-tab.sel{border-color:var(--teal);color:var(--teal);box-shadow:var(--glow)}
+  svg.wheel{width:100%;max-width:460px;height:auto;touch-action:manipulation}
+  .seg{cursor:pointer;transition:opacity .2s, filter .2s;stroke:var(--bg);stroke-width:1.5}
+  .seg:hover{filter:brightness(1.3)}
+  .seg.current{stroke:var(--gold);stroke-width:2.5}
+  .persp{font-size:7px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;pointer-events:none}
+  .nameseg{cursor:pointer;transition:filter .2s} .nameseg:hover{filter:brightness(1.8)}
+  .namearc{fill:#ffffff;font-size:10px;font-weight:800;letter-spacing:.6px;cursor:pointer}
+  .namearc:hover{fill:var(--teal)}
+  .caption{text-align:center;margin-top:8px;font-size:13px;color:var(--ink-dim)}
+  .caption b{color:var(--ink)} .caption .pc{color:var(--teal);font-weight:700}
+  .legend{display:flex;gap:16px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+  .legend .li{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-dim)}
+  .legend .sw{width:12px;height:12px;border-radius:3px}
+  .ringkey{display:flex;gap:14px;justify-content:center;margin-top:8px;flex-wrap:wrap}
+  .ringkey .rk{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-faint)}
+  .ringkey .rd{width:10px;height:10px;border-radius:50%}
+
+  .side{display:flex;flex-direction:column;gap:14px}
+  .card{border:1px solid var(--line2);border-radius:14px;padding:16px;background:rgba(255,255,255,.015)}
+  .card h3{margin:0 0 3px;font-size:15px;font-family:'Montserrat',Inter,sans-serif}
+  .card .ring-of{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:8px}
+  .card .def{color:var(--ink-dim);font-size:13.5px;margin:0 0 10px;line-height:1.5}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
+  .chip{font-size:11.5px;color:var(--ink-dim);border:1px solid var(--line2);border-radius:999px;padding:2px 9px;background:var(--bg2)}
+  .moreBtn{font-size:12.5px;color:var(--blue);background:none;border:none;cursor:pointer;padding:0;margin:0 0 12px;text-decoration:underline}
+  .ask{font-size:14px;color:var(--ink);margin:0 0 12px}
+  .ask b{color:var(--teal)}
+  .yesno{display:flex;gap:10px}
+  .yesno .btn{flex:1;padding:11px}
+  .btn.yes{background:transparent;border-color:var(--line2);color:var(--ink-dim)}
+  .btn.yes.on{background:rgba(56,225,200,.14);border-color:var(--teal);color:var(--teal);box-shadow:var(--glow)}
+  .btn.no{background:transparent;border-color:var(--line2);color:var(--ink-dim)}
+  .btn.no.on{background:rgba(120,150,170,.14);border-color:var(--ink-faint);color:var(--ink)}
+  .cmt{margin-top:11px}
+  .walk-nav{display:flex;gap:10px;margin-top:14px;align-items:center}
+  .walk-nav .prog{flex:1;font-size:12px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+  .explore-note{color:var(--ink-faint);font-size:12.5px;margin-top:10px}
+
+  .rank .rrow{margin:11px 0}
+  .rank .rtop{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:5px}
+  .rank .rtop .nm{font-weight:600}
+  .rank .rtop .rn{color:var(--teal);font-weight:700;font-variant-numeric:tabular-nums}
+  .track{height:11px;border-radius:7px;background:var(--line);overflow:hidden}
+  .fill{height:100%;border-radius:7px;background:linear-gradient(90deg,var(--teal-deep),var(--teal));
+    box-shadow:var(--glow);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+  .lead-badge{display:inline-block;font-size:10.5px;color:#052027;background:var(--gold);border-radius:5px;
+    padding:1px 7px;margin-left:7px;font-weight:700;vertical-align:middle}
+  .rank .brk{font-size:11px;color:var(--ink-faint);margin-top:3px}
+
+  .evbar{display:flex;align-items:center;gap:12px;margin-top:16px;padding:11px 14px;border:1px dashed rgba(255,107,107,.35);
+    border-radius:12px;background:rgba(255,107,107,.04)}
+  .evbar .t{flex:1;font-size:12.5px;color:var(--ink-dim)}
+  .evbar .t b{color:var(--red)}
+  .overlay{position:fixed;inset:0;background:rgba(4,10,16,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:40}
+  .overlay.on{display:flex;animation:rise .25s ease both}
+  .modal{max-width:540px;width:100%;background:linear-gradient(180deg,var(--panel),var(--panel2));
+    border:1px solid var(--line2);border-radius:16px;padding:24px;box-shadow:var(--shadow);max-height:88vh;overflow:auto}
+  .modal h2{margin-top:0}
+  .modal .kv{margin:14px 0}
+  .modal .kv .k{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);font-weight:600;margin-bottom:4px}
+  .modal .kv .v{color:var(--ink-dim);font-size:14px;line-height:1.55}
+  .banner{margin-top:14px;padding:12px 14px;border-radius:12px;background:rgba(255,107,107,.10);
+    border:1px solid rgba(255,107,107,.4);color:#ffd7d7;font-size:13px;display:none}
+  .banner.on{display:block}
+
+  .foot{margin-top:24px;color:var(--ink-faint);font-size:12px;text-align:center;line-height:1.6}
+  .foot b{color:var(--ink-dim)} .kbd{border:1px solid var(--line2);border-radius:5px;padding:1px 6px;font-size:11px;color:var(--ink-dim)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="appbar">
+    <div class="logo"><div class="mark"></div><b>ACT&nbsp;Resolution</b><span>value-based decision resolution</span></div>
+    <div class="canon-tag">values&nbsp;=&nbsp;<b>9 Value Clusters</b>&nbsp;(canon)</div>
+  </div>
+
+  <div class="panel">
+
+    <!-- ============ WHEEL (also the landing demo) ============ -->
+    <section class="view active" id="v-wheel">
+
+      <div class="demo-banner" id="demoBanner">
+        <div class="txt">
+          <span class="badge">Live demo</span>
+          <h2>This is a worked example — explore the wheel.</h2>
+          <p>The 9 spokes are our <b>Value Clusters</b>. The three rings are perspectives on them:
+            <b style="color:var(--ring-me)">self</b> (inner), the
+            <b style="color:var(--ring-eco)">ecosystem</b> (middle), the
+            <b style="color:var(--ring-world)">world</b> (outer). Click a name on the rim to read that value.</p>
+          <div class="steps">
+            <div class="step"><b>1</b> Pick an option (top)</div>
+            <div class="step"><b>2</b> Click a value — read it, mark alignment</div>
+            <div class="step"><b>3</b> See the ranking</div>
+          </div>
+        </div>
+        <button class="btn primary" onclick="doForMyOrg()">Do it for my organization →</button>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap">
+        <p class="eyebrow" style="margin:0">The value wheel</p>
+        <div class="spacer" style="flex:1"></div>
+        <button class="btn ghost" id="setupBtn" style="padding:8px 14px;font-size:13px;display:none" onclick="show('v-setup')">← Edit setup</button>
+        <button class="btn ghost" id="modeBtn" style="padding:8px 14px;font-size:13px" onclick="toggleMode()">Guided walkthrough ▶</button>
+      </div>
+      <p class="lead" id="wheelLead">Pick an option, then click a value wedge to read it and mark whether that option
+        aligns. Work inner ring first (your view), then ecosystem, then world.</p>
+
+      <div class="stage">
+        <div class="wheel-col">
+          <div class="opt-tabs" id="optTabs"></div>
+          <svg class="wheel" id="wheel" viewBox="0 0 500 500" aria-label="value wheel"></svg>
+          <div class="caption" id="caption"></div>
+          <div class="ringkey">
+            <div class="rk"><span class="rd" style="background:var(--ring-me)"></span>Inner = Self</div>
+            <div class="rk"><span class="rd" style="background:var(--ring-eco)"></span>Middle = Ecosystem</div>
+            <div class="rk"><span class="rd" style="background:var(--ring-world)"></span>Outer = World</div>
+            <div class="rk"><span class="rd" style="background:#04070b;border:1px solid var(--line2)"></span>Rim = value name (click)</div>
+          </div>
+          <div class="legend">
+            <div class="li"><span class="sw" style="background:var(--teal)"></span>Aligns (×2)</div>
+            <div class="li"><span class="sw" style="background:var(--no)"></span>Doesn't</div>
+            <div class="li"><span class="sw" style="background:var(--line)"></span>Unanswered</div>
+          </div>
+        </div>
+
+        <div class="side">
+          <div class="card" id="valCard">
+            <div class="ring-of" id="vcRing" style="color:var(--ring-me)">FROM YOUR VIEW</div>
+            <h3 id="vcName">Click a value to begin</h3>
+            <p class="def" id="vcDef">The 9 wedges are the ecosystem's Value Clusters. Select one — you'll see what
+              it means and its synonyms, and can mark whether the current option aligns with it.</p>
+            <div class="chips" id="vcChips"></div>
+            <button class="moreBtn" id="moreBtn" style="display:none" onclick="openValueInfo()">ⓘ Full meaning + how it applies →</button>
+            <div id="vcQ" style="display:none">
+              <p class="ask" id="vcAsk"></p>
+              <div class="yesno">
+                <button class="btn yes" id="btnYes" onclick="answer(true)">Aligns ✓</button>
+                <button class="btn no"  id="btnNo"  onclick="answer(false)">Doesn't ✕</button>
+              </div>
+              <textarea class="cmt" id="vcComment" placeholder="Optional — why? (an explanation strengthens the record)"></textarea>
+              <div class="walk-nav" id="walkNav" style="display:none">
+                <button class="btn ghost" style="padding:8px 14px;font-size:13px" onclick="walk(-1)">← Prev</button>
+                <div class="prog" id="walkProg"></div>
+                <button class="btn primary" style="padding:8px 14px;font-size:13px" onclick="walk(1)">Next →</button>
+              </div>
+            </div>
+            <p class="explore-note" id="exploreNote">Free-explore mode — read any value. Switch to the guided
+              walkthrough to be taken value by value.</p>
+          </div>
+
+          <div class="card rank">
+            <h3>Live ranking <span style="font-weight:400;color:var(--ink-faint);font-size:12px">— by alignment</span></h3>
+            <div id="ranking"></div>
+            <div class="brk" id="rankBrk"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="evbar">
+        <div class="t"><b>⛔ Scientific evidence?</b> If solid evidence bears on this, stop and enter it —
+          it reopens the decision and re-runs it on the new evidence.</div>
+        <button class="btn danger" style="padding:9px 15px;font-size:13px" onclick="openEvidence()">Stop &amp; add evidence</button>
+      </div>
+      <div class="banner" id="evBanner"></div>
+
+      <div class="actions">
+        <button class="btn ghost" onclick="resetAnswers()">Clear answers</button>
+        <div class="spacer"></div>
+        <button class="btn ghost" onclick="copyOut()">Copy result</button>
+        <button class="btn primary" onclick="finish()">See resolution →</button>
+      </div>
+    </section>
+
+    <!-- ============ SETUP ============ -->
+    <section class="view" id="v-setup">
+      <p class="eyebrow">Do it for your organization</p>
+      <h1>Set up your comparison.</h1>
+      <p class="lead">Name the options you're choosing between. The 9 <b>Value Clusters</b> below are our canon
+        set (edit or add if you need to). Each is rated three ways on the wheel — from your view, the
+        ecosystem's, and the world's.</p>
+
+      <label class="f">The options you're comparing</label>
+      <div class="rows" id="optRows"></div>
+      <button class="add" onclick="addOpt()">+ Add an option</button>
+
+      <label class="f" style="margin-top:22px">The Value Clusters <span style="color:var(--ink-faint);font-weight:400">— canon set, editable</span></label>
+      <div class="rows" id="clusterRows"></div>
+      <button class="add" onclick="addCluster()">+ Add value cluster</button>
+
+      <div class="ring-note">
+        <div class="p"><span class="d" style="background:var(--ring-me)"></span><b>Inner ring</b> — your view</div>
+        <div class="p"><span class="d" style="background:var(--ring-eco)"></span><b>Middle ring</b> — ecosystem's view</div>
+        <div class="p"><span class="d" style="background:var(--ring-world)"></span><b>Outer ring</b> — world's view</div>
+        <div style="flex:1;min-width:180px">Same clusters, three perspectives — you answer each one three times.</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn ghost" onclick="backToDemo()">← Back to demo</button>
+        <div class="spacer"></div>
+        <button class="btn primary" onclick="startWheel(false)">Open my wheel →</button>
+      </div>
+    </section>
+
+    <!-- ============ RESULT ============ -->
+    <section class="view" id="v-result">
+      <p class="eyebrow">Resolution</p>
+      <h1 id="resHead">Where the values point</h1>
+      <p class="lead" id="resLead"></p>
+      <div class="card rank"><div id="ranking2"></div><div class="brk" id="rankBrk2"></div></div>
+      <div class="card" id="evList" style="display:none"><h3>Evidence on record</h3><div id="evItems"></div></div>
+      <div class="actions">
+        <button class="btn ghost" onclick="show('v-wheel')">← Back to wheel</button>
+        <div class="spacer"></div>
+        <button class="btn ghost" onclick="copyOut()">Copy result</button>
+        <button class="btn primary" onclick="doForMyOrg()">New comparison</button>
+      </div>
+      <p class="hint" id="emitNote" style="text-align:center"></p>
+    </section>
+
+  </div>
+
+  <p class="foot">
+    <b>ACT Resolution</b> · Module #1 of the OmniOne/NEOS app family · values from the 9 <b>Value Clusters</b> (canon/01).<br/>
+    Standalone demo — plugs into <b>NEOS Den</b> via <span class="kbd">ACTResolution.mount(el, {options, clusters, onResolve})</span>.
+  </p>
+</div>
+
+<!-- value-info modal -->
+<div class="overlay" id="valOverlay">
+  <div class="modal">
+    <div class="ring-of" id="viRing" style="color:var(--ring-me);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:6px">FROM YOUR VIEW</div>
+    <h2 id="viName">Value cluster</h2>
+    <div class="kv"><div class="k">What it means</div><div class="v" id="viDef"></div></div>
+    <div class="kv" id="viSynWrap"><div class="k">Includes / synonyms</div><div class="chips" id="viSyn"></div></div>
+    <div class="kv" id="viApplyWrap"><div class="k">How it applies in the ecosystem</div><div class="v" id="viApply"></div></div>
+    <div class="actions">
+      <button class="btn ghost" onclick="closeValueInfo()">Close</button>
+      <div class="spacer"></div>
+      <button class="btn primary" onclick="closeValueInfo();doForMyOrg()">Do it for my organization →</button>
+    </div>
+  </div>
+</div>
+
+<!-- evidence modal -->
+<div class="overlay" id="evOverlay">
+  <div class="modal">
+    <p class="eyebrow" style="color:var(--red)">Scientific evidence — stop &amp; re-run</p>
+    <h2>What does the evidence change?</h2>
+    <p class="lead" style="font-size:14px">Evidence overrides opinion. Enter it, and the decision reopens so it
+      can be re-evaluated in light of it.</p>
+    <label class="f">Which option does this bear on?</label>
+    <div id="evOptPick" class="opt-tabs" style="justify-content:flex-start"></div>
+    <label class="f">The claim — what the evidence shows</label>
+    <textarea id="evClaim" placeholder="e.g. Peer-reviewed data shows option B fails on regeneration."></textarea>
+    <label class="f">The evidence / source <span style="color:var(--red)">*required</span></label>
+    <textarea id="evSource" placeholder="Study, dataset, citation, link…"></textarea>
+    <div class="actions">
+      <button class="btn ghost" onclick="closeEvidence()">Cancel</button>
+      <div class="spacer"></div>
+      <button class="btn danger" onclick="submitEvidence()">Log evidence &amp; re-run</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ====================================================================
+   ACT Resolution — standalone core + module contract.
+   Values = the 9 canon Value Clusters. 3 rings = perspectives (You /
+   Ecosystem / World) on the SAME clusters, radially aligned.
+   ==================================================================== */
+
+/* ---- the 9 Value Clusters (canon/01 — def + synonyms verbatim) ---- */
+const CANON_CLUSTERS = [
+  {label:'Integrity & Honor',                short:'Integrity',    def:'Reliability of word, trust, ethical consistency.',      syn:['integrity','honesty','honor','accountability','keeping agreements'], apply:'Agreements are the ecosystem’s backbone — honoring your word is what makes the whole trustworthy.'},
+  {label:'Consent, Agency & Sovereignty',    short:'Consent',      def:'Freedom of choice and non-coercion.',                   syn:['consent','autonomy','sovereignty','voluntary participation','right to exit'], apply:'No one is bound without agreeing; sovereignty and the right to exit are protected — no urgency or pressure.'},
+  {label:'Fairness, Equity & Reciprocity',   short:'Fairness',     def:'Just treatment relative to contribution.',              syn:['fairness','equity','reciprocity','proportionality','non-exploitation'], apply:'Contribution is reciprocated, not extracted — surplus returns to the commons rather than to private profit.'},
+  {label:'Transparency & Truth',             short:'Transparency', def:'Shared access to information for trust.',                syn:['transparency','clarity','truth-telling','visibility'], apply:'Shared works are 100% transparent; decisions and money are recorded where members can see.'},
+  {label:'Collaboration & Collective Intelligence', short:'Collaboration', def:'Thinking and acting together coherently.',       syn:['collaboration','coordination','shared sense-making','co-creation'], apply:'ACT and shared sense-making — the team moves coherently, never by solo action.'},
+  {label:'Stewardship & Responsibility',     short:'Stewardship',  def:'Care for resources, roles, and long-term impacts.',      syn:['stewardship','responsibility','caretaking','sustainability','works/IP','roles'], apply:'Responsibility without ownership capture — you look after resources, you don’t privatize them.'},
+  {label:'Learning, Adaptability & Evolution', short:'Learning',   def:'Capacity to evolve without collapse.',                   syn:['learning','adaptability','experimentation','feedback','iteration'], apply:'Feedback loops and coachability let the system evolve without breaking.'},
+  {label:'Belonging, Dignity & Participation', short:'Belonging',  def:'Relational safety and meaningful inclusion.',            syn:['belonging','dignity','inclusion','participation','mutual respect'], apply:'Solutionary Culture and mutual respect — conflict is repaired, people aren’t discarded.'},
+  {label:'Life, Health & Regeneration',      short:'Life',         def:'Thriving of life systems beyond survival.',              syn:['health','regeneration','vitality','ecological well-being','resilience'], apply:'Regeneration over extraction — human rights and ecological well-being come first.'}
+];
+
+const RINGS = [
+  {id:'me',   persp:'for yourself',      label:'Self',      color:'var(--ring-me)'},
+  {id:'eco',  persp:'for the ecosystem', label:'Ecosystem', color:'var(--ring-eco)'},
+  {id:'world',persp:'for the world',     label:'World',     color:'var(--ring-world)'}
+];
+const YES_WEIGHT = 2;
+
+const state = {
+  options:[], clusters:[],          // clusters: {id,label,short,def,syn,apply}
+  answers:{},                       // answers[optId][ringId][clusterId] = {aligned,comment}
+  evidence:[], currentOpt:null,
+  current:{ring:null,cluster:null}, guided:false, walkList:[], demoMode:true
+};
+
+/* ---- module contract --------------------------------------------- */
+const ACTResolution = {
+  onResolve:null,
+  mount(el, cfg={}){
+    if(cfg.options) state.options = cfg.options.map((o,i)=>({id:o.id||('o'+i),label:o.label||o}));
+    if(cfg.clusters) state.clusters = cfg.clusters.map((c,i)=>({id:c.id||('c'+i),label:c.label||c,short:c.short||c.label||c,def:c.def||'',syn:c.syn||[],apply:c.apply||''}));
+    if(cfg.onResolve) this.onResolve = cfg.onResolve;
+    state.demoMode=false; renderSetup();
+    if(cfg.autostart!==false) startWheel(false);
+    return this;
+  }
+};
+window.ACTResolution = ACTResolution;
+
+function show(id){ document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id)); window.scrollTo({top:0,behavior:'smooth'}); }
+
+/* ---- setup rendering --------------------------------------------- */
+function addOpt(label=''){ state.options.push({id:'o'+Date.now().toString(36)+Math.floor(Math.random()*99),label}); renderOptRows(); }
+function renderOptRows(){
+  const c=document.getElementById('optRows'); c.innerHTML='';
+  state.options.forEach((o,i)=>{
+    const row=document.createElement('div'); row.className='row';
+    const inp=document.createElement('input'); inp.type='text'; inp.className='def'; inp.value=o.label;
+    inp.placeholder='Option '+String.fromCharCode(65+i); inp.oninput=e=>o.label=e.target.value;
+    const del=document.createElement('button'); del.className='icon-btn'; del.textContent='×';
+    del.onclick=()=>{state.options.splice(i,1);renderOptRows();};
+    row.appendChild(inp); row.appendChild(del); c.appendChild(row);
+  });
+}
+function addCluster(label='',def=''){ state.clusters.push({id:'c'+Date.now().toString(36)+Math.floor(Math.random()*99),label,short:label,def,syn:[],apply:''}); renderClusterRows(); }
+function renderClusterRows(){
+  const c=document.getElementById('clusterRows'); if(!c) return; c.innerHTML='';
+  state.clusters.forEach((v,i)=>{
+    const row=document.createElement('div'); row.className='row';
+    const lbl=document.createElement('input'); lbl.type='text'; lbl.className='lbl'; lbl.value=v.label;
+    lbl.placeholder='Cluster'; lbl.oninput=e=>{v.label=e.target.value; if(!v._shortEdited) v.short=e.target.value;};
+    const def=document.createElement('input'); def.type='text'; def.className='def'; def.value=v.def;
+    def.placeholder='What it means'; def.oninput=e=>v.def=e.target.value;
+    const del=document.createElement('button'); del.className='icon-btn'; del.textContent='×';
+    del.onclick=()=>{state.clusters.splice(i,1);renderClusterRows();};
+    row.appendChild(lbl); row.appendChild(def); row.appendChild(del); c.appendChild(row);
+  });
+}
+function renderSetup(){ renderOptRows(); renderClusterRows(); }
+
+/* ---- geometry (rings run to the centre; +outer name ring) -------- */
+const CX=250, CY=250;
+const BANDS = { me:[28,90], eco:[92,154], world:[156,218], name:[220,246] };  // Self→Eco→World→Name
+function polar(cx,cy,r,a){ const rad=(a-90)*Math.PI/180; return [cx+r*Math.cos(rad), cy+r*Math.sin(rad)]; }
+function annular(cx,cy,ri,ro,a0,a1){
+  const [x0o,y0o]=polar(cx,cy,ro,a0), [x1o,y1o]=polar(cx,cy,ro,a1);
+  const [x1i,y1i]=polar(cx,cy,ri,a1), [x0i,y0i]=polar(cx,cy,ri,a0);
+  const large=(a1-a0)>180?1:0;
+  return `M${x0o} ${y0o} A${ro} ${ro} 0 ${large} 1 ${x1o} ${y1o} L${x1i} ${y1i} A${ri} ${ri} 0 ${large} 0 ${x0i} ${y0i} Z`;
+}
+
+/* ---- demo / my-org routing --------------------------------------- */
+function freshClusters(){ return CANON_CLUSTERS.map((c,i)=>({id:'c'+i,label:c.label,short:c.short,def:c.def,syn:c.syn.slice(),apply:c.apply})); }
+function loadDemoData(){
+  state.options=[{id:'oa',label:'Self-host'},{id:'ob',label:'Managed cloud'},{id:'oc',label:'Federated nodes'}];
+  state.clusters=freshClusters();
+  // a filled example (1=aligns, 0=doesn't), rows are clusters 0..8, per ring
+  const demo={
+    oa:{me:[1,1,1,0,1,1,1,0,0], eco:[1,1,1,1,1,1,1,1,0], world:[1,0,1,1,0,1,0,1,0]},
+    ob:{me:[1,0,0,1,1,0,1,1,1], eco:[0,0,1,0,1,0,1,1,1], world:[0,0,0,1,0,0,1,1,1]},
+    oc:{me:[1,1,1,1,1,1,1,1,1], eco:[1,1,1,1,1,1,1,1,1], world:[1,1,1,1,0,1,1,1,1]}
+  };
+  state.answers={};
+  Object.keys(demo).forEach(oid=>{ state.answers[oid]={};
+    RINGS.forEach(r=>{ state.answers[oid][r.id]={};
+      state.clusters.forEach((c,i)=>{ state.answers[oid][r.id][c.id]={aligned:!!demo[oid][r.id][i]}; }); }); });
+  state.evidence=[]; state.currentOpt='oc'; state.demoMode=true;
+}
+function doForMyOrg(){
+  state.options=[{id:'o'+Date.now().toString(36),label:''},{id:'o'+(Date.now().toString(36)+1),label:''}];
+  state.clusters=freshClusters();
+  state.answers={}; state.evidence=[]; state.currentOpt=null; state.demoMode=false;
+  renderSetup(); show('v-setup');
+}
+function backToDemo(){ loadDemoData(); startWheel(true); }
+
+/* ---- wheel ------------------------------------------------------- */
+function startWheel(isDemo){
+  const opts=state.options.filter(o=>o.label.trim());
+  if(opts.length<2){ alert('Add at least two options to compare.'); return; }
+  if(state.clusters.filter(c=>c.label.trim()).length===0){ alert('Add at least one value cluster.'); return; }
+  if(!state.currentOpt || !opts.find(o=>o.id===state.currentOpt)) state.currentOpt=opts[0].id;
+  state.demoMode=!!isDemo;
+  document.getElementById('demoBanner').style.display = state.demoMode ? 'flex' : 'none';
+  document.getElementById('setupBtn').style.display  = state.demoMode ? 'none' : 'inline-block';
+  buildWalkList(); renderTabs(); renderWheel(); renderRanking(); clearCard(); show('v-wheel');
+}
+function activeClusters(){ return state.clusters.filter(c=>c.label.trim()); }
+function buildWalkList(){
+  state.walkList=[];
+  RINGS.forEach(r=>activeClusters().forEach(c=>state.walkList.push({ring:r.id,cluster:c.id})));
+}
+function renderTabs(){
+  const c=document.getElementById('optTabs'); c.innerHTML='';
+  state.options.filter(o=>o.label.trim()).forEach(o=>{
+    const t=document.createElement('button'); t.className='opt-tab'+(o.id===state.currentOpt?' sel':'');
+    t.innerHTML=o.label+' <span class="mini">'+countAnswered(o.id)+'/'+state.walkList.length+'</span>';
+    t.onclick=()=>{state.currentOpt=o.id;renderTabs();renderWheel();clearCard();};
+    c.appendChild(t);
+  });
+}
+function renderWheel(){
+  const svg=document.getElementById('wheel'); svg.innerHTML='';
+  const ns='http://www.w3.org/2000/svg';
+  const cls=activeClusters(); const n=cls.length; if(!n) return; const step=360/n;
+  const defs=document.createElementNS(ns,'defs'); svg.appendChild(defs);
+  // three rating rings — Self (inner) · Ecosystem · World (outer); perspective word written in each wedge
+  RINGS.forEach(r=>{
+    const [ri,ro]=BANDS[r.id]; const rMid=(ri+ro)/2;
+    cls.forEach((c,i)=>{
+      const a0=i*step+0.6, a1=(i+1)*step-0.6;
+      const p=document.createElementNS(ns,'path'); p.setAttribute('d',annular(CX,CY,ri,ro,a0,a1));
+      const ans=state.answers[state.currentOpt]?.[r.id]?.[c.id];
+      let fill='var(--line)', op='.85', txt='var(--ink-faint)';
+      if(ans){ if(ans.aligned){ fill=r.color; op='1'; txt='#04141a'; } else { fill='var(--no)'; op='.55'; txt='var(--ink)'; } }
+      p.setAttribute('fill',fill); p.setAttribute('fill-opacity',op);
+      p.setAttribute('class','seg'+(state.current.ring===r.id&&state.current.cluster===c.id?' current':''));
+      p.onclick=(function(rid,cid){return function(){selectValue(rid,cid);};})(r.id,c.id);
+      const tt=document.createElementNS(ns,'title'); tt.textContent=r.label+' · '+c.label; p.appendChild(tt);
+      svg.appendChild(p);
+      // perspective word (radial), on every wedge
+      const mid=i*step+step/2; const [lx,ly]=polar(CX,CY,rMid,mid);
+      let rot=mid-90; if(mid>90&&mid<270) rot=mid+90;
+      const wt=document.createElementNS(ns,'text'); wt.setAttribute('x',lx);wt.setAttribute('y',ly);
+      wt.setAttribute('text-anchor','middle');wt.setAttribute('dominant-baseline','middle');
+      wt.setAttribute('class','persp');wt.setAttribute('fill',txt);
+      wt.setAttribute('transform','rotate('+rot+' '+lx+' '+ly+')'); wt.textContent=r.label;
+      svg.appendChild(wt);
+    });
+  });
+  // outer NAME ring — black band, white bold curved labels; the only info-click
+  const [nri,nro]=BANDS.name; const nMid=(nri+nro)/2;
+  cls.forEach((c,i)=>{
+    const a0=i*step+0.6, a1=(i+1)*step-0.6;
+    const seg=document.createElementNS(ns,'path'); seg.setAttribute('d',annular(CX,CY,nri,nro,a0,a1));
+    seg.setAttribute('fill','#04070b'); seg.setAttribute('stroke','var(--line2)'); seg.setAttribute('stroke-width','1');
+    seg.setAttribute('class','nameseg');
+    seg.onclick=(function(cid){return function(){openValueInfo(cid);};})(c.id);
+    const tt=document.createElementNS(ns,'title'); tt.textContent=c.label+' — click for details'; seg.appendChild(tt);
+    svg.appendChild(seg);
+    // curved text along the arc (letters follow the ring; bottom ones read upside-down)
+    const pad=2.2, b0=i*step+pad, b1=(i+1)*step-pad;
+    const [ax0,ay0]=polar(CX,CY,nMid,b0), [ax1,ay1]=polar(CX,CY,nMid,b1);
+    const arc=document.createElementNS(ns,'path');
+    arc.setAttribute('d','M'+ax0+' '+ay0+' A'+nMid+' '+nMid+' 0 0 1 '+ax1+' '+ay1);
+    arc.setAttribute('id','narc'+i); arc.setAttribute('fill','none'); defs.appendChild(arc);
+    const txt=document.createElementNS(ns,'text'); txt.setAttribute('class','namearc');
+    const tp=document.createElementNS(ns,'textPath');
+    tp.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href','#narc'+i);
+    tp.setAttribute('href','#narc'+i); tp.setAttribute('startOffset','50%'); tp.setAttribute('text-anchor','middle');
+    tp.textContent=(c.short||c.label).toUpperCase(); txt.appendChild(tp);
+    txt.onclick=(function(cid){return function(){openValueInfo(cid);};})(c.id);
+    svg.appendChild(txt);
+  });
+  // tiny centre with the option's overall score
+  const hub=document.createElementNS(ns,'circle'); hub.setAttribute('cx',CX);hub.setAttribute('cy',CY);
+  hub.setAttribute('r',24);hub.setAttribute('fill','var(--bg2)');hub.setAttribute('stroke','var(--line2)');svg.appendChild(hub);
+  const t=document.createElementNS(ns,'text'); t.setAttribute('x',CX);t.setAttribute('y',CY+4);
+  t.setAttribute('text-anchor','middle');t.setAttribute('font-size','13');t.setAttribute('font-weight','700');
+  t.setAttribute('fill','var(--teal)');t.textContent=scorePct(state.currentOpt)+'%';svg.appendChild(t);
+  const opt=state.options.find(o=>o.id===state.currentOpt);
+  document.getElementById('caption').innerHTML='Evaluating <b>'+(opt?opt.label:'')+'</b> — <span class="pc">'+scorePct(state.currentOpt)+'% aligned</span> across self · ecosystem · world';
+}
+
+/* ---- select + answer --------------------------------------------- */
+function selectValue(ringId,clusterId){
+  state.current={ring:ringId,cluster:clusterId};
+  const r=RINGS.find(x=>x.id===ringId); const c=state.clusters.find(x=>x.id===clusterId);
+  const opt=state.options.find(o=>o.id===state.currentOpt);
+  document.getElementById('vcRing').textContent=r.persp.toUpperCase();
+  document.getElementById('vcRing').style.color=r.color;
+  document.getElementById('vcName').textContent=c.label||'(unnamed)';
+  document.getElementById('vcDef').textContent=c.def||'No description for this cluster.';
+  document.getElementById('vcChips').innerHTML='';
+  document.getElementById('moreBtn').style.display='none';
+  document.getElementById('vcQ').style.display='block';
+  document.getElementById('exploreNote').style.display=state.guided?'none':'block';
+  document.getElementById('vcAsk').innerHTML='Does <b>'+(opt?opt.label:'this option')+'</b> align with <b>'+(c.short||c.label)+'</b> — '+r.persp.toLowerCase()+'?';
+  const ans=state.answers[state.currentOpt]?.[ringId]?.[clusterId];
+  document.getElementById('btnYes').classList.toggle('on', ans&&ans.aligned===true);
+  document.getElementById('btnNo').classList.toggle('on', ans&&ans.aligned===false);
+  document.getElementById('vcComment').value=ans?ans.comment||'':'';
+  document.getElementById('walkNav').style.display=state.guided?'flex':'none';
+  if(state.guided) updateWalkProg();
+  renderWheel();
+}
+function clearCard(){
+  state.current={ring:null,cluster:null};
+  document.getElementById('vcRing').textContent='FOR YOURSELF';
+  document.getElementById('vcRing').style.color='var(--ring-me)';
+  document.getElementById('vcName').textContent='Click a value to begin';
+  document.getElementById('vcDef').textContent='The 9 wedges are the ecosystem’s Value Clusters. Select one — you’ll see what it means and its synonyms, and can mark whether the current option aligns.';
+  document.getElementById('vcChips').innerHTML='';
+  document.getElementById('moreBtn').style.display='none';
+  document.getElementById('vcQ').style.display='none';
+}
+function answer(aligned){
+  if(!state.current.cluster) return;
+  const o=state.currentOpt, r=state.current.ring, cid=state.current.cluster;
+  if(!state.answers[o]) state.answers[o]={};
+  if(!state.answers[o][r]) state.answers[o][r]={};
+  state.answers[o][r][cid]={aligned,comment:document.getElementById('vcComment').value};
+  document.getElementById('btnYes').classList.toggle('on',aligned===true);
+  document.getElementById('btnNo').classList.toggle('on',aligned===false);
+  renderWheel(); renderTabs(); renderRanking(); emit();
+  if(state.guided) setTimeout(()=>walk(1),240);
+}
+document.addEventListener('input',e=>{
+  if(e.target.id==='vcComment' && state.current.cluster){
+    const a=state.answers[state.currentOpt]?.[state.current.ring]?.[state.current.cluster]; if(a) a.comment=e.target.value;
+  }
+});
+
+/* ---- value-info modal -------------------------------------------- */
+function openValueInfo(clusterId){
+  const cid = clusterId || state.current.cluster; if(!cid) return;
+  const c=state.clusters.find(x=>x.id===cid); if(!c) return;
+  document.getElementById('viRing').textContent='VALUE CLUSTER'; document.getElementById('viRing').style.color='var(--gold)';
+  document.getElementById('viName').textContent=c.label||'Value cluster';
+  document.getElementById('viDef').textContent=c.def||'—';
+  const synWrap=document.getElementById('viSynWrap');
+  if(c.syn&&c.syn.length){ synWrap.style.display='block'; document.getElementById('viSyn').innerHTML=c.syn.map(s=>'<span class="chip">'+s+'</span>').join(''); } else synWrap.style.display='none';
+  const apWrap=document.getElementById('viApplyWrap');
+  if(c.apply){ apWrap.style.display='block'; document.getElementById('viApply').textContent=c.apply; } else apWrap.style.display='none';
+  document.getElementById('valOverlay').classList.add('on');
+}
+function closeValueInfo(){ document.getElementById('valOverlay').classList.remove('on'); }
+
+/* ---- guided walkthrough ------------------------------------------ */
+function toggleMode(){
+  state.guided=!state.guided;
+  document.getElementById('modeBtn').textContent=state.guided?'Free explore ●':'Guided walkthrough ▶';
+  document.getElementById('wheelLead').textContent=state.guided
+    ? 'Guided — answer each value in turn: your ring first, then ecosystem, then world. Yes advances automatically.'
+    : 'Pick an option, then click a value wedge to read it and mark whether that option aligns.';
+  if(state.guided){ const idx=firstUnanswered(); walkTo(idx<0?0:idx); } else clearCard();
+}
+function firstUnanswered(){ for(let i=0;i<state.walkList.length;i++){ const w=state.walkList[i]; if(!state.answers[state.currentOpt]?.[w.ring]?.[w.cluster]) return i; } return -1; }
+function walkTo(i){ if(i<0||i>=state.walkList.length) return; const w=state.walkList[i]; selectValue(w.ring,w.cluster); }
+function walk(dir){
+  const cur=state.walkList.findIndex(w=>w.ring===state.current.ring&&w.cluster===state.current.cluster); let ni=cur+dir;
+  if(ni>=state.walkList.length){
+    const opts=state.options.filter(o=>o.label.trim()); const idx=opts.findIndex(o=>o.id===state.currentOpt);
+    if(idx<opts.length-1){ state.currentOpt=opts[idx+1].id; renderTabs(); renderWheel(); walkTo(0); return; }
+    finish(); return;
+  }
+  if(ni<0) ni=0; walkTo(ni);
+}
+function updateWalkProg(){
+  const cur=state.walkList.findIndex(w=>w.ring===state.current.ring&&w.cluster===state.current.cluster);
+  const r=RINGS.find(x=>x.id===state.current.ring);
+  document.getElementById('walkProg').textContent='Step '+(cur+1)+' of '+state.walkList.length+'  ·  '+r.label+' ring';
+}
+
+/* ---- scoring + ranking ------------------------------------------- */
+function countAnswered(optId){ let n=0; state.walkList.forEach(w=>{ if(state.answers[optId]?.[w.ring]?.[w.cluster]) n++; }); return n; }
+function rawScore(optId){ let s=0; state.walkList.forEach(w=>{ if(state.answers[optId]?.[w.ring]?.[w.cluster]?.aligned) s+=YES_WEIGHT; }); return s; }
+function maxScore(){ return state.walkList.length*YES_WEIGHT || 1; }
+function scorePct(optId){ return Math.round(rawScore(optId)/maxScore()*100); }
+function ringBreakdown(optId){
+  return RINGS.map(r=>{
+    const yes=activeClusters().filter(c=>state.answers[optId]?.[r.id]?.[c.id]?.aligned).length;
+    return r.label+' '+yes+'/'+activeClusters().length;
+  }).join('  ·  ');
+}
+function ranked(){
+  return state.options.filter(o=>o.label.trim())
+    .map(o=>({id:o.id,label:o.label,score:rawScore(o.id),pct:scorePct(o.id)}))
+    .sort((a,b)=>b.score-a.score);
+}
+function rankHtml(list){
+  const max=Math.max(1,...list.map(r=>r.score));
+  return list.map((r,i)=>(
+    '<div class="rrow"><div class="rtop"><div class="nm">'+r.label+(i===0&&r.score>0?'<span class="lead-badge">most aligned</span>':'')+
+    '</div><div class="rn">'+r.pct+'%</div></div><div class="track"><div class="fill" style="width:'+Math.round(r.score/max*100)+'%"></div></div>'+
+    '<div class="brk">'+ringBreakdown(r.id)+'</div></div>'
+  )).join('');
+}
+function renderRanking(){
+  document.getElementById('ranking').innerHTML=rankHtml(ranked());
+  const nn=state.evidence.length;
+  document.getElementById('rankBrk').textContent=nn?('⛔ '+nn+' evidence item(s) on record — ranking reflects re-evaluation.'):'';
+}
+
+/* ---- evidence stop ----------------------------------------------- */
+function openEvidence(){
+  const pick=document.getElementById('evOptPick'); pick.innerHTML='';
+  const all=document.createElement('button'); all.className='opt-tab sel'; all.dataset.ev='all'; all.textContent='All options'; all.onclick=()=>selEv(all); pick.appendChild(all);
+  state.options.filter(o=>o.label.trim()).forEach(o=>{ const b=document.createElement('button'); b.className='opt-tab'; b.dataset.ev=o.id; b.textContent=o.label; b.onclick=()=>selEv(b); pick.appendChild(b); });
+  document.getElementById('evClaim').value=''; document.getElementById('evSource').value='';
+  document.getElementById('evOverlay').classList.add('on');
+}
+function selEv(btn){ document.querySelectorAll('#evOptPick .opt-tab').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }
+function closeEvidence(){ document.getElementById('evOverlay').classList.remove('on'); }
+function submitEvidence(){
+  const source=document.getElementById('evSource').value.trim();
+  if(!source){ alert('Evidence requires a source — that’s the point of the stop.'); return; }
+  const target=document.querySelector('#evOptPick .opt-tab.sel').dataset.ev;
+  const claim=document.getElementById('evClaim').value.trim();
+  state.evidence.push({optId:target,claim,source,ts:new Date().toISOString()});
+  if(target==='all') state.answers={}; else delete state.answers[target];
+  closeEvidence();
+  const label=target==='all'?'all options':(state.options.find(o=>o.id===target)||{}).label;
+  const b=document.getElementById('evBanner'); b.classList.add('on');
+  b.innerHTML='⛔ <b>Re-evaluation triggered.</b> New evidence logged for <b>'+label+'</b>. Its alignment has been cleared — walk it through again in light of the evidence.';
+  if(target!=='all') state.currentOpt=target;
+  renderTabs(); renderWheel(); renderRanking(); clearCard(); if(state.guided) walkTo(0); emit();
+}
+
+/* ---- finish / emit ----------------------------------------------- */
+function finish(){
+  const list=ranked();
+  document.getElementById('resLead').innerHTML = list.length && list[0].score>0
+    ? 'Most aligned: <b style="color:var(--teal)">'+list[0].label+'</b> at '+list[0].pct+'%. You declare the resolution — the ranking informs it.'
+    : 'No option scores yet — answer some values first.';
+  document.getElementById('ranking2').innerHTML=rankHtml(list);
+  const ev=document.getElementById('evList');
+  if(state.evidence.length){ ev.style.display='block';
+    document.getElementById('evItems').innerHTML=state.evidence.map(e=>{
+      const nm=e.optId==='all'?'All options':(state.options.find(o=>o.id===e.optId)||{}).label;
+      return '<div class="brk" style="font-size:12.5px;color:var(--ink-dim);margin-top:8px">⛔ <b>'+nm+'</b> — '+(e.claim||'(claim)')+'<br><span style="color:var(--ink-faint)">source: '+e.source+'</span></div>';
+    }).join('');
+  } else ev.style.display='none';
+  emit(); show('v-result');
+}
+function emit(){
+  const list=ranked();
+  const result={
+    ranking:list.map(r=>({optionId:r.id,label:r.label,score:r.score,pct:r.pct})),
+    topOptionId:list[0]?list[0].id:null, weightYes:YES_WEIGHT,
+    clusters:activeClusters().map(c=>c.label), perspectives:RINGS.map(r=>r.id),
+    detail:state.answers, evidence:state.evidence, resolvedVia:'value-based-model', timestamp:new Date().toISOString()
+  };
+  ACTResolution.lastResult=result;
+  const note=document.getElementById('emitNote');
+  if(typeof ACTResolution.onResolve==='function'){ ACTResolution.onResolve(result); if(note) note.textContent='✓ result emitted to host via onResolve()'; }
+  else if(note) note.textContent='Standalone mode — result on ACTResolution.lastResult';
+}
+function copyOut(){
+  const list=ranked(); let t='ACT RESOLUTION — value alignment (9 clusters × 3 perspectives)\n';
+  list.forEach((r,i)=>{ t+=(i+1)+'. '+r.label+'  '+r.pct+'%  ('+ringBreakdown(r.id)+')\n'; });
+  if(state.evidence.length){ t+='\nEvidence:\n'; state.evidence.forEach(e=>{const nm=e.optId==='all'?'All':(state.options.find(o=>o.id===e.optId)||{}).label;t+=' ⛔ '+nm+': '+(e.claim||'')+' [source: '+e.source+']\n';}); }
+  navigator.clipboard?.writeText(t);
+}
+function resetAnswers(){ if(!confirm('Clear all alignment answers?')) return; state.answers={}; renderTabs();renderWheel();renderRanking();clearCard();emit(); }
+
+/* ---- init: land on the demo -------------------------------------- */
+loadDemoData(); renderSetup(); startWheel(true);
+</script>
+</body>
+</html>

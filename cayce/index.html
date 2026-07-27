@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 2027 Threshold — Cayce's Prophecy × OmniOne / NEOS</title>
+<style>
+  :root{
+    --bg:#070b14; --bg2:#0c1526; --ink:#e8eef7; --dim:#93a4bf; --faint:#5f708c;
+    --teal:#22d3c5; --teal-d:#0e7d78; --gold:#e9c46a; --world:#5b8bd0; --world-d:#2b4a78;
+    --ok:#3ddc84; --build:#e9c46a; --todo:#7c8aa5; --line:rgba(255,255,255,.09);
+    --card:rgba(255,255,255,.035);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:radial-gradient(1200px 700px at 50% -10%, #14203a 0%, var(--bg2) 45%, var(--bg) 100%);
+    color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  h1,h2,h3{line-height:1.15;margin:0 0 .4em;font-weight:700;letter-spacing:-.01em}
+  .serif{font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif}
+  a{color:var(--teal)}
+  .eyebrow{font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--teal);font-weight:700}
+  .muted{color:var(--dim)} .faint{color:var(--faint)}
+
+  /* HERO */
+  .hero{position:relative;text-align:center;padding:120px 0 70px;overflow:hidden}
+  #stars{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:.55}
+  .hero .wrap{position:relative;z-index:1}
+  .hero h1{font-size:clamp(2.4rem,6vw,4.4rem);font-weight:800;letter-spacing:-.02em;
+    background:linear-gradient(180deg,#fff, #b9c8e0 70%, #7f93b6);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .year{display:inline-block;font-size:clamp(4rem,15vw,9rem);font-weight:800;line-height:.9;margin:.1em 0 .1em;
+    background:linear-gradient(180deg,var(--gold),#b98a2e);-webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 60px rgba(233,196,106,.18)}
+  .lede{max-width:680px;margin:14px auto 0;font-size:1.15rem;color:#cdd8ec}
+  .glowline{height:1px;width:180px;margin:34px auto 0;background:linear-gradient(90deg,transparent,var(--teal),transparent);box-shadow:0 0 24px var(--teal)}
+
+  section{padding:64px 0;position:relative}
+  .sec-head{max-width:760px;margin:0 auto 34px;text-align:center}
+  .sec-head h2{font-size:clamp(1.6rem,3.4vw,2.4rem)}
+  .sec-head p{color:var(--dim);font-size:1.05rem}
+
+  /* three processes */
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .proc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;position:relative;overflow:hidden}
+  .proc .n{font-size:.72rem;letter-spacing:.2em;color:var(--faint);text-transform:uppercase}
+  .proc h3{font-size:1.15rem;margin-top:6px}
+  .proc p{color:var(--dim);font-size:.95rem;margin:0}
+  .proc .ico{font-size:1.7rem;margin-bottom:10px;display:block}
+  .proc.hot{border-color:rgba(34,211,197,.35);box-shadow:inset 0 0 40px rgba(34,211,197,.06)}
+
+  /* reframe band */
+  .band{background:linear-gradient(180deg,rgba(34,211,197,.06),rgba(34,211,197,0));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .quote{max-width:820px;margin:0 auto;text-align:center}
+  .quote .big{font-size:clamp(1.4rem,3vw,2rem);font-weight:600;color:#eaf2ff}
+  .quote .big em{color:var(--teal);font-style:normal}
+  .attrib{margin-top:14px;color:var(--faint);font-size:.85rem;letter-spacing:.04em}
+
+  /* legend */
+  .legend{display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:center;margin:0 auto 28px;font-size:.82rem;color:var(--dim)}
+  .lg{display:inline-flex;align-items:center;gap:7px}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+  .d-ok{background:var(--ok)} .d-build{background:var(--build)} .d-todo{background:var(--todo);opacity:.7}
+  .pill{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:999px;font-size:.72rem;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+  .p-ok{background:rgba(61,220,132,.14);color:#8ff0b6;border:1px solid rgba(61,220,132,.3)}
+  .p-build{background:rgba(233,196,106,.14);color:#f0d495;border:1px solid rgba(233,196,106,.3)}
+  .p-todo{background:rgba(124,138,165,.14);color:#b6c2d6;border:1px solid rgba(124,138,165,.3)}
+
+  /* comparison grid */
+  .grid-head,.row{display:grid;grid-template-columns:1.15fr 1fr 1.35fr .5fr;gap:0}
+  .grid-head{position:sticky;top:0;z-index:3;background:#0b1striped;background:rgba(9,14,26,.92);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:700}
+  .grid-head>div{padding:14px 16px}
+  .cmp{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:rgba(255,255,255,.02)}
+  .row{border-top:1px solid var(--line);transition:background .2s}
+  .row:hover{background:rgba(34,211,197,.04)}
+  .row>div{padding:18px 16px;font-size:.92rem}
+  .req{font-weight:600;color:#eaf2ff}
+  .req .k{display:block;font-size:.7rem;color:var(--faint);font-weight:700;letter-spacing:.06em;margin-bottom:4px;text-transform:uppercase}
+  .world{color:#b8c8e6;border-left:1px solid var(--line)}
+  .world .tag{color:var(--world);font-weight:700}
+  .ours{color:#d8e6f2;border-left:1px solid var(--line);background:rgba(34,211,197,.03)}
+  .ours b{color:var(--teal)}
+  .stat{border-left:1px solid var(--line);display:flex;align-items:flex-start;justify-content:center;padding-top:18px}
+  .col-tag{display:inline-block;font-size:.62rem;letter-spacing:.16em;font-weight:800;text-transform:uppercase;padding:2px 8px;border-radius:6px;margin-bottom:8px}
+  .ct-world{background:rgba(91,139,208,.16);color:#9fc0ee}
+  .ct-ours{background:rgba(34,211,197,.16);color:#7ff0e6}
+
+  /* scoreboard */
+  .score{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:760px;margin:0 auto}
+  .sc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;text-align:center}
+  .sc .num{font-size:2.6rem;font-weight:800;line-height:1}
+  .sc.ok .num{color:var(--ok)} .sc.build .num{color:var(--build)} .sc.todo .num{color:#aeb9cd}
+  .sc .lab{margin-top:8px;color:var(--dim);font-size:.9rem}
+
+  /* key insight */
+  .key{max-width:860px;margin:0 auto;background:linear-gradient(180deg,rgba(233,196,106,.05),transparent);border:1px solid rgba(233,196,106,.22);border-radius:20px;padding:34px 30px}
+  .key h3{font-size:1.5rem;color:#f3e6c4}
+  .key p{color:#d6dced}
+  .key .callout{margin-top:18px;padding:16px 18px;background:rgba(34,211,197,.07);border-left:3px solid var(--teal);border-radius:0 12px 12px 0;color:#e9f6f4}
+
+  .build-list{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+  .bl{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .bl h4{margin:0 0 12px;font-size:.95rem;display:flex;align-items:center;gap:8px}
+  .bl ul{margin:0;padding-left:18px;color:var(--dim);font-size:.88rem}
+  .bl li{margin-bottom:6px}
+
+  footer{padding:50px 0 70px;text-align:center;color:var(--faint);font-size:.82rem;border-top:1px solid var(--line)}
+  .disc{max-width:720px;margin:0 auto 18px;font-size:.8rem;color:var(--faint);font-style:italic}
+
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:820px){
+    .three{grid-template-columns:1fr}
+    .build-list{grid-template-columns:1fr}
+    .score{grid-template-columns:1fr}
+    .grid-head{display:none}
+    .row{grid-template-columns:1fr;gap:0}
+    .row>div{border-left:none!important;border-top:1px solid var(--line)}
+    .row>div:first-child{border-top:none}
+    .stat{justify-content:flex-start;padding-top:8px}
+    .col-tag{display:inline-block}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <canvas id="stars"></canvas>
+  <div class="wrap">
+    <div class="eyebrow">Edgar Cayce · reading circa 1943 · a thought experiment</div>
+    <h1 class="serif">The Threshold</h1>
+    <div class="year">2027</div>
+    <p class="lede">Cayce didn't describe America's <em>destruction</em>. He described its <strong>rebirth</strong> — the dismantling of "structures that could no longer contain the consciousness that was emerging." A new awareness would arrive in the breakdown, he said, <em>"but only for those who had prepared."</em></p>
+    <p class="lede" style="margin-top:18px;color:var(--teal)"><strong>If that's the future we're walking into — here's what it asks for, what the world is doing about it, and what OmniOne has already built to meet it.</strong></p>
+    <div class="glowline"></div>
+  </div>
+</div>
+
+<!-- THE PROPHECY -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">What he saw</div>
+      <h2 class="serif">Three processes, arriving at once</h2>
+      <p>Beginning at the 2027 threshold — 250 years after 1777 — Cayce said three forces would rise "simultaneously, like three instruments in a symphony increasing in volume together." Not punishment. Initiation.</p>
+    </div>
+    <div class="three">
+      <div class="proc reveal">
+        <span class="ico">🌍</span>
+        <div class="n">Process One</div>
+        <h3>Geographic disruption</h3>
+        <p>The land itself responding to a shift in collective consciousness. "You cannot change the frequency of awareness without physical reality adjusting to match."</p>
+      </div>
+      <div class="proc hot reveal">
+        <span class="ico">🏛️</span>
+        <div class="n">Process Two</div>
+        <h3>Institutional collapse</h3>
+        <p>Structures "built on principles of force, control, and extraction" losing coherence — becoming "energetically impossible to sustain" as the collective vibration rises. <strong>This is the one we can answer.</strong></p>
+      </div>
+      <div class="proc reveal">
+        <span class="ico">✦</span>
+        <div class="n">Process Three</div>
+        <h3>Spiritual awakening</h3>
+        <p>A rupture in consensus reality forcing millions to recognize themselves as more than their roles — and, in the chaos, a new way of living emerging <em>for those prepared to meet it.</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REFRAME -->
+<section class="band">
+  <div class="wrap">
+    <div class="quote reveal">
+      <div class="eyebrow" style="margin-bottom:16px">The reframe that changes everything</div>
+      <p class="big">"The catastrophe and the transformation were not separate events. What appeared as collapse was actually the dismantling of structures that could no longer contain the consciousness that was emerging — <em>but a new awareness would emerge only for those who had prepared."</em></p>
+      <div class="attrib">— narration of Cayce's reading</div>
+    </div>
+    <div class="quote reveal" style="margin-top:40px">
+      <p class="big" style="font-size:clamp(1.2rem,2.6vw,1.6rem)">A collapse only becomes a <em>rebirth</em> if there's a coherent structure to step into when the old one comes apart. Waiting and hoping for a better world is one thing — <em>building the one you can actually move into</em> is what makes it arrive.</p>
+      <div class="attrib" style="margin-top:24px;font-size:1.1rem;color:var(--gold);font-style:italic">"Be the change you wish to see in the world."</div>
+      <div class="attrib">— Mahatma Gandhi</div>
+      <div class="attrib" style="margin-top:16px;font-size:1.1rem;color:var(--gold);font-style:italic">"The best way to predict the future is to create it."</div>
+      <div class="attrib">— Peter Drucker</div>
+    </div>
+  </div>
+</section>
+
+<!-- THE COMPARISON -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">The comparison</div>
+      <h2 class="serif">What the threshold requires — the world vs. what we've built</h2>
+      <p>Read each row this way: <strong>here's one thing the new world would need → here's who out there is reaching for it → here's what OmniOne has actually built.</strong> New to some of the words? There's a plain-English glossary at the bottom.</p>
+    </div>
+
+    <div class="legend reveal">
+      <span class="lg"><span class="pill p-ok">✅ Built</span> in canon / exists</span>
+      <span class="lg"><span class="pill p-build">🔧 Building</span> in progress</span>
+      <span class="lg"><span class="pill p-todo">○ To build</span> planned / make room</span>
+    </div>
+
+    <div class="cmp reveal">
+      <div class="grid-head">
+        <div>What the shift requires</div>
+        <div><span class="ct-world">🌍 The world is reaching</span></div>
+        <div><span class="ct-ours">✦ OmniOne / NEOS has built</span></div>
+        <div>Ours</div>
+      </div>
+
+      <div class="row">
+        <div class="req"><span class="k">The core wound</span>Replace institutions built on force, control &amp; extraction</div>
+        <div class="world"><span class="tag">Degrowth · anti-extraction · B-Corps · Occupy-era critique.</span> Names the problem powerfully — rarely replaces it.</div>
+        <div class="ours">The founding move: <b>no owner, no boss; authority lives in the agreements; capital buys no control; all profit → a commons fund; stewardship, not ownership; anti-capture by design.</b></div>
+        <div class="stat"><span class="pill p-ok">✅</span></div>
+      </div>
+
+      <div class="row">
+        <div class="req"><span class="k">The key</span>A way to decide together <em>without hierarchy</em></div>
+        <div class="world"><span class="tag">Sociocracy · Holacracy · consensus circles.</span> Real fragments — but org-scale and often brittle.</div>
+        <div class="ours"><b>ACT — the Agent Coherence Template.</b> A coherence-first decision method that doesn't impede anyone's purpose — the one approach we've found that actually fits a system with no hierarchy. It's the aligned default an ETHOS runs on today; if a better fit emerges, the door stays open.</div>
+        <div class="stat"><span class="pill p-ok">✅</span></div>
+      </div>
+
+      <div class="row">
+        <div class="req"><span class="k">The unit</span>New social units able to hold the emerging consciousness</div>
+        <div class="world"><span class="tag">Ecovillages (GEN) · intentional communities · co-ops.</span> Beautiful, but each reinvents its own rules.</div>
+        <div class="ours"><b>The ETHOS</b> — a self-governing unit anyone can form; <b>Nexus</b> the open door; <b>Certified ETHOS</b> the earned state. A defined, repeatable unit — not a one-off commune.</div>
+        <div class="stat"><span class="pill p-ok">✅</span></div>
+      </div>
+
+      <div class="row">
+        <div class="req"><span class="k">The economy</span>Value that circulates instead of extracts</div>
+        <div class="world"><span class="tag">Solidarity economy · mutual aid · doughnut &amp; gift economies.</span> Right instinct, piecemeal in practice.</div>
+        <div class="ours"><b>Contribution + Access economy</b>, funding pools, the Fountain Model, insourcing-at-cost — a whole model where reciprocation replaces compensation.</div>
+        <div class="stat"><span class="pill p-build">🔧</span></div>
+      </div>
+
+      <div class="row">
+        <div class="req"><span class="k">The measure</span>A new definition of thriving, beyond GDP &amp; materialism</div>
+        <div class="world"><span class="tag">Wellbeing economy · GNH · Doughnut dashboards.</span> Policy-level metrics, rarely a lived index.</div>
+        <div class="ours"><b>New GDP</b> — a regenerative thriving index with its own formula, measuring how much of the world's problem-load a new-OS world removes.</div>
+        <div class="stat"><span class="pill p-build">🔧</span></div>
+      </div>
+
+      <div class="row">
+        <div class="req"><span class="k">The preparation</span>Initiation for the shift — "only for those who prepared"</div>
+        <div class="world"><span class="tag">Awakening &amp; consciousness movements · retreats · courses.</span> Opens people — then hands them nowhere concrete to go.</div>
+        <div class="ours"><b>Education &amp; Onboarding</b> + the <b>ETHOS Book</b> + a <b>Whole Systems Design</b> track — turning "I woke up" into "here is how you live it, at every level."</div>
+        <div class="stat"><span class="pill p-build">🔧</span></div>
+      </div>
+
+      <div class="row">
+        <div class="req"><span class="k">The gathering</span>Match the prepared into aligned community</div>
+        <div class="world"><span class="tag">Meetup · community finders · dating-style apps.</span> Connects people, not purpose.</div>
+        <div class="ours"><b>Charting the Course / TribeMatch</b> — matching people into aligned teams by values and contribution, not proximity.</div>
+        <div class="stat"><span class="pill p-build">🔧</span></div>
+      </div>
+
+      <div class="row">
+        <div class="req"><span class="k">The ground</span>Land &amp; shelter separated from capital and ownership</div>
+        <div class="world"><span class="tag">Community land trusts · cohousing · CLTs.</span> Real and growing — but rarely paired with a governance system.</div>
+        <div class="ours"><b>SHUR</b> residencies · <b>Green Communities</b> · <b>Green Cities</b> — land stewarded and non-collateralizable, capital separated from control by design.</div>
+        <div class="stat"><span class="pill p-todo">○</span></div>
+      </div>
+
+      <div class="row">
+        <div class="req"><span class="k">The coordination</span>A layer that lets many communities act as one</div>
+        <div class="world"><span class="tag">Bioregional networks · federations · DAOs.</span> DAOs get decentralization — but often keep capital-as-control, the very thing to fix.</div>
+        <div class="ours"><b>NEOS Den</b> — the governance &amp; coordination platform; CHIEF (human) + OSP (machine) as the two halves of governance.</div>
+        <div class="stat"><span class="pill p-build">🔧</span></div>
+      </div>
+
+      <div class="row">
+        <div class="req"><span class="k">The resilience</span>Memory, drift-correction &amp; shared provisioning</div>
+        <div class="world"><span class="tag">Transition Towns · resilience networks.</span> Local resilience without a shared nervous system.</div>
+        <div class="ours"><b>Resource Gatherers</b> (shared provisioning at cost) · <b>Saberra</b> (institutional memory &amp; drift-correction) — the pieces that keep a system from quietly decaying.</div>
+        <div class="stat"><span class="pill p-todo">○</span></div>
+      </div>
+
+      <div class="row">
+        <div class="req"><span class="k">The meaning</span>A shared worldview — the "why" underneath it all</div>
+        <div class="world"><span class="tag">Integral · Spiral Dynamics · systems thinking.</span> Rich maps, no shared home to hold them.</div>
+        <div class="ours">The <b>New Paradigm Encyclopedia</b>, the canon, and the whole-living-system (Holos) frame — one coherent worldview every part of the system reads from.</div>
+        <div class="stat"><span class="pill p-ok">✅</span></div>
+      </div>
+
+      <div class="row">
+        <div class="req"><span class="k">Not ours to hold</span>The geographic / earth-change disruption itself</div>
+        <div class="world"><span class="tag">Climate adaptation · disaster resilience · relocation.</span> The world's and nature's to carry.</div>
+        <div class="ours faint">Outside our hands — but a regenerative, land-stewarding, self-provisioning model is exactly what you'd want <em>standing</em> when the ground moves.</div>
+        <div class="stat"><span class="pill p-todo">—</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SCOREBOARD -->
+<section style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Where we're at</div>
+      <h2 class="serif">The state of the ark</h2>
+      <p>Of the eleven things the threshold asks of a successor-system, here's how far OmniOne has come.</p>
+    </div>
+    <div class="score reveal">
+      <div class="sc ok"><div class="num">4</div><div class="lab"><strong>Built</strong> — the load-bearing core: the anti-extraction model, the decision method (ACT), the ETHOS unit, the shared worldview. The frame is real.</div></div>
+      <div class="sc build"><div class="num">5</div><div class="lab"><strong>Building</strong> — the economy, the measure (New GDP), the education, the matching app, the coordination platform. In motion right now.</div></div>
+      <div class="sc todo"><div class="num">2</div><div class="lab"><strong>To build / make room</strong> — the land layer (SHUR / Green Communities) and the resilience layer (Resource Gatherers · Saberra).</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY INSIGHT -->
+<section class="band">
+  <div class="wrap">
+    <div class="key reveal">
+      <div class="eyebrow">The thing most movements miss</div>
+      <h3 class="serif">Waking people up is not the same as giving them somewhere to go.</h3>
+      <p>Almost every movement in that middle column is <em>good</em> — worth joining, worth supporting. Degrowth, the solidarity economy, the wellbeing-economy work, the awakening. But look at the pattern: they either <strong>critique the old system without offering a whole alternative</strong>, or they <strong>build one excellent piece</strong> — a co-op, a metric, a land trust, a DAO — <strong>with no connective system to hold it.</strong></p>
+      <p>Cayce's institutions collapse "because they were built on force, control, and extraction." But collapse alone isn't rebirth. If nothing coherent exists to step into, a collapse is just a collapse. Many have tried to change the system by <em>fighting it</em> — very few by <em>building a working replacement people can actually move into.</em></p>
+      <div class="callout">
+        <strong>OmniOne's bet is the missing key:</strong> not one more movement, but the <em>operating system underneath a new one</em> — a real decision method (ACT), non-capture economics, a repeatable unit (the ETHOS), a coordination layer, and a new measure of thriving. The alternative you step <em>into</em> when the old one can no longer hold. That is precisely why this threshold could be a rebirth and not only a breakdown — and it's why the timing matters: it may only be possible <em>because</em> the pieces are being built right now.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT ELSE -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">What still needs building — or room made for it</div>
+      <h2 class="serif">If this is the future, finish the ark</h2>
+    </div>
+    <div class="build-list">
+      <div class="bl reveal">
+        <h4><span class="dot d-ok"></span> Already standing</h4>
+        <ul>
+          <li>The anti-capture ownership model (canon)</li>
+          <li>ACT — the decision method</li>
+          <li>The ETHOS unit + Nexus + certification</li>
+          <li>The shared worldview / encyclopedia</li>
+          <li>Binding agreements in canon</li>
+        </ul>
+      </div>
+      <div class="bl reveal">
+        <h4><span class="dot d-build"></span> In the yard, being built</h4>
+        <ul>
+          <li>The economy (contribution + access)</li>
+          <li>New GDP — the new measure of thriving</li>
+          <li>The apps that run it (CTC · NEOS Den)</li>
+          <li>Education, onboarding &amp; the ETHOS Book</li>
+          <li>Matching the prepared into teams</li>
+        </ul>
+      </div>
+      <div class="bl reveal">
+        <h4><span class="dot d-todo"></span> Make room for these</h4>
+        <ul>
+          <li><strong>The land layer</strong> — residencies &amp; communities where capital ≠ control (SHUR, Green Communities)</li>
+          <li><strong>Resilience</strong> — shared provisioning (Resource Gatherers) + memory/drift-correction (Saberra)</li>
+          <li><strong>Whole Systems Design</strong> — the deep steward track</li>
+          <li><strong>A visible "on-ramp"</strong> for people arriving in the breakdown, ready but with nowhere to go</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GLOSSARY -->
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">New here?</div>
+      <h2 class="serif">The terms, in plain English</h2>
+      <p>A few words on this page are ours; others come from movements out in the world. Here's what each means — with links to learn more.</p>
+    </div>
+    <div style="max-width:820px;margin:0 auto;display:grid;gap:26px;font-size:.95rem">
+      <div>
+        <h3 style="color:var(--teal);font-size:1rem;margin-bottom:12px">Our words</h3>
+        <div style="display:grid;gap:11px;color:var(--dim)">
+          <div><b style="color:var(--ink)">ETHOS</b> — a self-governing organization with no owner and no boss; authority lives in its agreements. <a href="https://omnione.world" target="_blank" rel="noopener">omnione.world →</a></div>
+          <div><b style="color:var(--ink)">ACT</b> — our decision method: reaching a choice through coherence, without hierarchy. <a href="https://chatgpt.com/g/g-69465302efc88191b09f11576249b823-omnione-guide" target="_blank" rel="noopener">ask the OmniOne Guide →</a></div>
+          <div><b style="color:var(--ink)">NEOS · NEOS Den</b> — the operating system itself · the app where members actually govern. <a href="https://neosden.org" target="_blank" rel="noopener">neosden.org →</a></div>
+          <div><b style="color:var(--ink)">Nexus</b> — the open front door: anyone can take part without formally joining.</div>
+          <div><b style="color:var(--ink)">New GDP</b> — our new measure of thriving, beyond GDP. <a href="https://omnione.notion.site/New-GDP-12ed14367d5f80c68a63e4d4cf5a72c3" target="_blank" rel="noopener">read more →</a></div>
+          <div><b style="color:var(--ink)">Contribution / Access economy</b> — value returned through access and reciprocation, instead of extraction.</div>
+          <div><b style="color:var(--ink)">Anti-capture · stewardship</b> — resources are cared for, not owned — so no one can buy or seize them.</div>
+          <div><b style="color:var(--ink)">SHUR</b> — access-based residencies where the money is kept separate from control of the land.</div>
+        </div>
+      </div>
+      <div>
+        <h3 style="color:var(--gold);font-size:1rem;margin-bottom:12px">Movements &amp; references we mention</h3>
+        <div style="display:grid;gap:11px;color:var(--dim)">
+          <div><b style="color:var(--ink)">B Corp</b> — a business certified for meeting social &amp; environmental standards. <a href="https://en.wikipedia.org/wiki/B_Corporation_(certification)" target="_blank" rel="noopener">wiki →</a></div>
+          <div><b style="color:var(--ink)">Occupy(-era)</b> — the 2011 protest movement against inequality ("the 1%"). <a href="https://en.wikipedia.org/wiki/Occupy_movement" target="_blank" rel="noopener">wiki →</a></div>
+          <div><b style="color:var(--ink)">DAO</b> — a "decentralized autonomous organization," run by code and token-holders rather than a boss. <a href="https://en.wikipedia.org/wiki/Decentralized_autonomous_organization" target="_blank" rel="noopener">wiki →</a></div>
+          <div><b style="color:var(--ink)">Degrowth</b> — a movement for deliberately shrinking consumption to fit the planet. <a href="https://en.wikipedia.org/wiki/Degrowth" target="_blank" rel="noopener">wiki →</a></div>
+          <div><b style="color:var(--ink)">Holacracy · Sociocracy</b> — self-management systems that spread authority across roles instead of a hierarchy. <a href="https://en.wikipedia.org/wiki/Holacracy" target="_blank" rel="noopener">wiki →</a></div>
+          <div><b style="color:var(--ink)">Doughnut economics</b> — a model balancing human needs against planetary limits. <a href="https://en.wikipedia.org/wiki/Doughnut_(economic_model)" target="_blank" rel="noopener">wiki →</a></div>
+          <div><b style="color:var(--ink)">Ecovillages (GEN)</b> — intentional sustainable communities (Global Ecovillage Network). <a href="https://en.wikipedia.org/wiki/Ecovillage" target="_blank" rel="noopener">wiki →</a></div>
+          <div><b style="color:var(--ink)">Community land trust</b> — land held in trust for a community rather than privately owned. <a href="https://en.wikipedia.org/wiki/Community_land_trust" target="_blank" rel="noopener">wiki →</a></div>
+          <div><b style="color:var(--ink)">Teal (Laloux)</b> — the most self-managing stage of organizations, from the book <em>Reinventing Organizations</em>. <a href="https://en.wikipedia.org/wiki/Reinventing_Organizations" target="_blank" rel="noopener">wiki →</a></div>
+          <div><b style="color:var(--ink)">Kibbutzim · Buurtzorg · Zappos</b> — real cases we cite: an Israeli collective community · a Dutch self-managed care network · a company that tried and dropped Holacracy. <a href="https://en.wikipedia.org/wiki/Kibbutz" target="_blank" rel="noopener">wiki →</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="disc">A thought experiment, taken on its own terms. Edgar Cayce's readings are a matter of belief, not established fact, and the "1943 restricted transcript" framing comes from <a href="https://www.youtube.com/watch?v=zYVdeQDPsus" target="_blank" rel="noopener" style="color:var(--teal)">a popular video narration</a> (▶ watch the original) rather than a verified primary source. This piece treats the vision <em>as if</em> true — as Josh asked — to see what of it OmniOne has already prepared for. It is not a prediction or an endorsement of one.</p>
+    <p>Built for Josh · OmniOne / NEOS · the 2027 threshold, seen through what we've made room for.</p>
+  </div>
+</footer>
+
+<script>
+// starfield
+(function(){
+  const c=document.getElementById('stars');if(!c)return;const x=c.getContext('2d');let w,h,st=[];
+  function rs(){w=c.width=c.offsetWidth;h=c.height=c.offsetHeight;st=[];const n=Math.min(160,Math.floor(w*h/9000));
+    for(let i=0;i<n;i++)st.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.4+.2,a:Math.random(),s:Math.random()*.02+.004});}
+  function draw(){x.clearRect(0,0,w,h);for(const s of st){s.a+=s.s;let o=.4+Math.abs(Math.sin(s.a))*.6;
+    x.beginPath();x.arc(s.x,s.y,s.r,0,7);x.fillStyle='rgba(180,215,255,'+o+')';x.fill();}requestAnimationFrame(draw);}
+  rs();draw();window.addEventListener('resize',rs);
+})();
+// reveal on scroll
+(function(){const els=document.querySelectorAll('.reveal');
+  const io=new IntersectionObserver((e)=>{e.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:.12});
+  els.forEach(el=>io.observe(el));})();
+</script>
+</body>
+</html>
