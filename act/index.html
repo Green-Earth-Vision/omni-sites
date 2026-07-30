@@ -228,8 +228,8 @@
             <div class="rk"><span class="rd" style="background:#04070b;border:1px solid var(--line2)"></span>Rim = value name (click)</div>
           </div>
           <div class="legend">
-            <div class="li"><span class="sw" style="background:var(--teal)"></span>Aligns (×2)</div>
-            <div class="li"><span class="sw" style="background:var(--no)"></span>Doesn't</div>
+            <div class="li"><span class="sw" style="background:var(--teal)"></span>Aligns +1 (+2 with a reason)</div>
+            <div class="li"><span class="sw" style="background:var(--no)"></span>Doesn't 0 (−1 with a reason)</div>
             <div class="li"><span class="sw" style="background:var(--line)"></span>Unanswered</div>
           </div>
         </div>
@@ -248,7 +248,7 @@
                 <button class="btn yes" id="btnYes" onclick="answer(true)">Aligns ✓</button>
                 <button class="btn no"  id="btnNo"  onclick="answer(false)">Doesn't ✕</button>
               </div>
-              <textarea class="cmt" id="vcComment" placeholder="Optional — why? (an explanation strengthens the record)"></textarea>
+              <textarea class="cmt" id="vcComment" placeholder="Optional — a reason makes this answer weigh more (a reasoned “Doesn't” counts against)"></textarea>
               <div class="walk-nav" id="walkNav" style="display:none">
                 <button class="btn ghost" style="padding:8px 14px;font-size:13px" onclick="walk(-1)">← Prev</button>
                 <div class="prog" id="walkProg"></div>
@@ -398,7 +398,14 @@ const RINGS = [
   {id:'eco',  persp:'for the ecosystem', label:'Ecosystem', color:'var(--ring-eco)'},
   {id:'world',persp:'for the world',     label:'World',     color:'var(--ring-world)'}
 ];
-const YES_WEIGHT = 2;
+const WEIGHTS = { yes:1, yesExplained:2, no:0, noExplained:-1 };  // reasoned answers weigh more; a reasoned "Doesn't" counts against
+const MAX_PER = 2;                                                 // best case per mark = Aligns + a reason
+function hasExpl(a){ return !!(a && a.comment && a.comment.trim()); }
+function markScore(a){
+  if(!a || a.aligned===undefined || a.aligned===null) return 0;
+  return a.aligned ? (hasExpl(a)?WEIGHTS.yesExplained:WEIGHTS.yes)
+                   : (hasExpl(a)?WEIGHTS.noExplained:WEIGHTS.no);
+}
 
 const state = {
   options:[], clusters:[],          // clusters: {id,label,short,def,syn,apply}
@@ -478,6 +485,9 @@ function loadDemoData(){
   Object.keys(demo).forEach(oid=>{ state.answers[oid]={};
     RINGS.forEach(r=>{ state.answers[oid][r.id]={};
       state.clusters.forEach((c,i)=>{ state.answers[oid][r.id][c.id]={aligned:!!demo[oid][r.id][i]}; }); }); });
+  // showcase the weighting in the demo: reasons lift the strong option; reasoned "Doesn't" marks sink the weak one
+  RINGS.forEach(r=> state.clusters.forEach(c=>{ const a=state.answers.oc?.[r.id]?.[c.id]; if(a&&a.aligned) a.comment='Backed by a specific reason in this worked example.'; }));
+  state.clusters.forEach(c=>{ const a=state.answers.ob?.world?.[c.id]; if(a&&!a.aligned) a.comment='Documented reason this option falls short here.'; });
   state.evidence=[]; state.currentOpt='oc'; state.demoMode=true;
 }
 function doForMyOrg(){
@@ -562,7 +572,11 @@ function renderWheel(){
     const tp=document.createElementNS(ns,'textPath');
     tp.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href','#narc'+i);
     tp.setAttribute('href','#narc'+i); tp.setAttribute('startOffset','50%'); tp.setAttribute('text-anchor','middle');
-    tp.textContent=(c.short||c.label).toUpperCase(); txt.appendChild(tp);
+    const full=(c.label||c.short||'').toUpperCase(); tp.textContent=full;
+    const arcLen=2*Math.PI*nMid*((step-4.4)/360);              // fit the FULL cluster name to its arc
+    let fs=arcLen/Math.max(1,(full.length*0.62)); fs=Math.max(5,Math.min(10,fs));
+    txt.setAttribute('font-size',fs.toFixed(1)); txt.setAttribute('letter-spacing', fs<8?'0':'.4');
+    txt.appendChild(tp);
     txt.onclick=(function(cid){return function(){openValueInfo(cid);};})(c.id);
     svg.appendChild(txt);
   });
@@ -621,7 +635,8 @@ function answer(aligned){
 }
 document.addEventListener('input',e=>{
   if(e.target.id==='vcComment' && state.current.cluster){
-    const a=state.answers[state.currentOpt]?.[state.current.ring]?.[state.current.cluster]; if(a) a.comment=e.target.value;
+    const a=state.answers[state.currentOpt]?.[state.current.ring]?.[state.current.cluster];
+    if(a){ a.comment=e.target.value; renderWheel(); renderRanking(); emit(); }   // reason changes the weight — re-score live
   }
 });
 
@@ -668,8 +683,8 @@ function updateWalkProg(){
 
 /* ---- scoring + ranking ------------------------------------------- */
 function countAnswered(optId){ let n=0; state.walkList.forEach(w=>{ if(state.answers[optId]?.[w.ring]?.[w.cluster]) n++; }); return n; }
-function rawScore(optId){ let s=0; state.walkList.forEach(w=>{ if(state.answers[optId]?.[w.ring]?.[w.cluster]?.aligned) s+=YES_WEIGHT; }); return s; }
-function maxScore(){ return state.walkList.length*YES_WEIGHT || 1; }
+function rawScore(optId){ let s=0; state.walkList.forEach(w=>{ s+=markScore(state.answers[optId]?.[w.ring]?.[w.cluster]); }); return s; }
+function maxScore(){ return state.walkList.length*MAX_PER || 1; }
 function scorePct(optId){ return Math.round(rawScore(optId)/maxScore()*100); }
 function ringBreakdown(optId){
   return RINGS.map(r=>{
@@ -686,7 +701,7 @@ function rankHtml(list){
   const max=Math.max(1,...list.map(r=>r.score));
   return list.map((r,i)=>(
     '<div class="rrow"><div class="rtop"><div class="nm">'+r.label+(i===0&&r.score>0?'<span class="lead-badge">most aligned</span>':'')+
-    '</div><div class="rn">'+r.pct+'%</div></div><div class="track"><div class="fill" style="width:'+Math.round(r.score/max*100)+'%"></div></div>'+
+    '</div><div class="rn">'+r.pct+'%</div></div><div class="track"><div class="fill" style="width:'+Math.max(0,Math.round(r.score/max*100))+'%"></div></div>'+
     '<div class="brk">'+ringBreakdown(r.id)+'</div></div>'
   )).join('');
 }
@@ -741,7 +756,7 @@ function emit(){
   const list=ranked();
   const result={
     ranking:list.map(r=>({optionId:r.id,label:r.label,score:r.score,pct:r.pct})),
-    topOptionId:list[0]?list[0].id:null, weightYes:YES_WEIGHT,
+    topOptionId:list[0]?list[0].id:null, weighting:{yes:1,yesExplained:2,no:0,noExplained:-1},
     clusters:activeClusters().map(c=>c.label), perspectives:RINGS.map(r=>r.id),
     detail:state.answers, evidence:state.evidence, resolvedVia:'value-based-model', timestamp:new Date().toISOString()
   };
