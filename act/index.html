@@ -228,8 +228,8 @@
             <div class="rk"><span class="rd" style="background:#04070b;border:1px solid var(--line2)"></span>Rim = value name (click)</div>
           </div>
           <div class="legend">
-            <div class="li"><span class="sw" style="background:var(--teal)"></span>Aligns +1 (+2 with a reason)</div>
-            <div class="li"><span class="sw" style="background:var(--no)"></span>Doesn't 0 (−1 with a reason)</div>
+            <div class="li"><span class="sw" style="background:var(--teal)"></span>Aligns</div>
+            <div class="li"><span class="sw" style="background:var(--no)"></span>Doesn't</div>
             <div class="li"><span class="sw" style="background:var(--line)"></span>Unanswered</div>
           </div>
         </div>
@@ -248,7 +248,7 @@
                 <button class="btn yes" id="btnYes" onclick="answer(true)">Aligns ✓</button>
                 <button class="btn no"  id="btnNo"  onclick="answer(false)">Doesn't ✕</button>
               </div>
-              <textarea class="cmt" id="vcComment" placeholder="Optional — a reason makes this answer weigh more (a reasoned “Doesn't” counts against)"></textarea>
+              <textarea class="cmt" id="vcComment" placeholder="Optional — why? (your own score is just aligns / doesn't; a reason counts when everyone's scores are combined)"></textarea>
               <div class="walk-nav" id="walkNav" style="display:none">
                 <button class="btn ghost" style="padding:8px 14px;font-size:13px" onclick="walk(-1)">← Prev</button>
                 <div class="prog" id="walkProg"></div>
@@ -398,14 +398,12 @@ const RINGS = [
   {id:'eco',  persp:'for the ecosystem', label:'Ecosystem', color:'var(--ring-eco)'},
   {id:'world',persp:'for the world',     label:'World',     color:'var(--ring-world)'}
 ];
-const WEIGHTS = { yes:1, yesExplained:2, no:0, noExplained:-1 };  // reasoned answers weigh more; a reasoned "Doesn't" counts against
-const MAX_PER = 2;                                                 // best case per mark = Aligns + a reason
-function hasExpl(a){ return !!(a && a.comment && a.comment.trim()); }
-function markScore(a){
-  if(!a || a.aligned===undefined || a.aligned===null) return 0;
-  return a.aligned ? (hasExpl(a)?WEIGHTS.yesExplained:WEIGHTS.yes)
-                   : (hasExpl(a)?WEIGHTS.noExplained:WEIGHTS.no);
-}
+// INDIVIDUAL score = simple alignment: Aligns = 1, Doesn't = 0. All-yes = 100%.
+// A reason is OPTIONAL and does NOT change your own %.
+// The reasoned weighting (a reason = ×2, a reasoned "Doesn't" = −1) applies ONLY in
+// GROUP aggregation across participants — done host-side in NEOS Den, not here.
+const GROUP_WEIGHTING = { yes:1, yesExplained:2, no:0, noExplained:-1 };  // host-side only; detail[] carries per-mark comments
+function markScore(a){ return (a && a.aligned) ? 1 : 0; }
 
 const state = {
   options:[], clusters:[],          // clusters: {id,label,short,def,syn,apply}
@@ -636,7 +634,7 @@ function answer(aligned){
 document.addEventListener('input',e=>{
   if(e.target.id==='vcComment' && state.current.cluster){
     const a=state.answers[state.currentOpt]?.[state.current.ring]?.[state.current.cluster];
-    if(a){ a.comment=e.target.value; renderWheel(); renderRanking(); emit(); }   // reason changes the weight — re-score live
+    if(a){ a.comment=e.target.value; emit(); }   // store the reason (individual score unaffected); emit so the host has it for group weighting
   }
 });
 
@@ -684,7 +682,7 @@ function updateWalkProg(){
 /* ---- scoring + ranking ------------------------------------------- */
 function countAnswered(optId){ let n=0; state.walkList.forEach(w=>{ if(state.answers[optId]?.[w.ring]?.[w.cluster]) n++; }); return n; }
 function rawScore(optId){ let s=0; state.walkList.forEach(w=>{ s+=markScore(state.answers[optId]?.[w.ring]?.[w.cluster]); }); return s; }
-function maxScore(){ return state.walkList.length*MAX_PER || 1; }
+function maxScore(){ return state.walkList.length || 1; }
 function scorePct(optId){ return Math.round(rawScore(optId)/maxScore()*100); }
 function ringBreakdown(optId){
   return RINGS.map(r=>{
@@ -756,7 +754,8 @@ function emit(){
   const list=ranked();
   const result={
     ranking:list.map(r=>({optionId:r.id,label:r.label,score:r.score,pct:r.pct})),
-    topOptionId:list[0]?list[0].id:null, weighting:{yes:1,yesExplained:2,no:0,noExplained:-1},
+    topOptionId:list[0]?list[0].id:null,
+    scoring:'individual-alignment', groupWeighting:GROUP_WEIGHTING,   // individual = Aligns/Doesn't %; host applies groupWeighting across participants using detail[] comments
     clusters:activeClusters().map(c=>c.label), perspectives:RINGS.map(r=>r.id),
     detail:state.answers, evidence:state.evidence, resolvedVia:'value-based-model', timestamp:new Date().toISOString()
   };
