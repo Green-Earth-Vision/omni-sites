@@ -3,9 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ACT Resolution — align decisions to your values</title>
+<title>ACT Resolution: align decisions to your values</title>
+<link rel="stylesheet" href="https://omnione.world/fonts/fonts.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" />
 <style>
-  /* ===== ACT Resolution — standalone Module ================================
+  /* ===== ACT Resolution, standalone Module ================================
      Value-based decision resolution as a value wheel.
      9 canon VALUE CLUSTERS = the spokes. 3 rings = perspectives on the same
      clusters: inner = You · middle = Ecosystem · outer = World.
@@ -13,15 +17,15 @@
      Theme: OmniOne/NEOS teal family. Self-contained. Method = ACT (canon/01).
      ======================================================================= */
   :root{
-    --bg:#0a1620; --bg2:#0d1e2b; --panel:#102634; --panel2:#0e2130;
-    --line:#1c3a4d; --line2:#25506a;
-    --ink:#e8f4f8; --ink-dim:#a7c4d2; --ink-faint:#6f93a4;
-    --teal:#38e1c8; --teal-deep:#1fa8a0; --blue:#4aa8ff; --blue-deep:#2b6fb0;
+    --bg:#06151A; --bg2:#0a2229; --panel:rgba(6,21,26,.62); --panel2:rgba(6,21,26,.62);
+    --line:#16343c; --line2:rgba(53,227,242,.35);
+    --ink:#E4F6F8; --ink-dim:rgba(228,246,248,.74); --ink-faint:rgba(228,246,248,.48);
+    --teal:#35E3F2; --teal-deep:#35E3F2; --blue:#4aa8ff; --blue-deep:#2b6fb0;
     --gold:#d9b46a; --red:#ff6b6b; --no:#3a5568;
-    --ring-me:#38e1c8; --ring-eco:#4aa8ff; --ring-world:#c9a3ff;
-    --radius:16px; --radius-sm:10px;
+    --ring-me:#35E3F2; --ring-eco:#4aa8ff; --ring-world:#c9a3ff;
+    --radius:12px; --radius-sm:10px;
     --shadow:0 10px 40px rgba(0,0,0,.45);
-    --glow:0 0 22px rgba(56,225,200,.28);
+    --glow:0 0 18px rgba(53,227,242,.35);
   }
   *{box-sizing:border-box}
   html,body{margin:0}
@@ -176,15 +180,224 @@
 
   .foot{margin-top:24px;color:var(--ink-faint);font-size:12px;text-align:center;line-height:1.6}
   .foot b{color:var(--ink-dim)} .kbd{border:1px solid var(--line2);border-radius:5px;padding:1px 6px;font-size:11px;color:var(--ink-dim)}
+
+  /* ===== the omnione.world look on top of the app (Media/Marketing's look, copied from the AIM example 2026-10-12) ===== */
+  body{font-family:'Work Sans',system-ui,sans-serif;background:var(--bg)}
+  .theme-omnione .om-main{max-width:1100px}
+  .theme-omnione .panel{background:rgba(6,21,26,.62);backdrop-filter:blur(6px);border:none;box-shadow:inset 0 0 0 1px var(--om-rim);border-radius:var(--om-r)}
+  .theme-omnione .panel::after{display:none}
+  .theme-omnione h1{font-size:clamp(26px,4vw,40px);text-transform:uppercase;line-height:1.1}
+  .theme-omnione h2{font-size:18px;text-transform:uppercase}
+  .theme-omnione .card h3{font-size:14px;letter-spacing:.14em;text-transform:uppercase}
+  .theme-omnione .card{border:none;box-shadow:inset 0 0 0 1px var(--om-rim);background:rgba(6,21,26,.62);border-radius:var(--om-r)}
+  .theme-omnione .demo-banner{border:1px solid rgba(53,227,242,.6);border-radius:var(--om-r);background-color:rgba(6,21,26,.62);
+    background-image:linear-gradient(var(--om-accent),var(--om-accent)),linear-gradient(var(--om-accent),var(--om-accent)),linear-gradient(var(--om-accent),var(--om-accent)),linear-gradient(var(--om-accent),var(--om-accent)),linear-gradient(var(--om-accent),var(--om-accent)),linear-gradient(var(--om-accent),var(--om-accent)),linear-gradient(var(--om-accent),var(--om-accent)),linear-gradient(var(--om-accent),var(--om-accent));
+    background-size:18px 2px,2px 18px,18px 2px,2px 18px,18px 2px,2px 18px,18px 2px,2px 18px;
+    background-position:0 0,0 0,100% 0,100% 0,0 100%,0 100%,100% 100%,100% 100%;background-repeat:no-repeat}
+  .theme-omnione .eyebrow{letter-spacing:.22em;color:var(--om-accent)}
+  .theme-omnione .btn{border-radius:10px;min-height:40px}
+  .theme-omnione .btn.primary{background:var(--om-accent);color:#04222a;box-shadow:0 0 18px rgba(53,227,242,.35)}
+  .theme-omnione .btn.primary:hover{background:#6cecf6;box-shadow:0 0 28px rgba(53,227,242,.55);filter:none}
+  .theme-omnione .btn.ghost{background:rgba(6,21,26,.7);color:var(--om-fg);border:1px solid rgba(53,227,242,.55);box-shadow:0 0 14px rgba(53,227,242,.14)}
+  .theme-omnione .btn.ghost:hover{border-color:var(--om-accent);color:var(--om-accent);box-shadow:0 0 22px rgba(53,227,242,.3)}
+  .theme-omnione .opt-tab .mini{color:var(--ink-faint)}
+  .theme-omnione .caption .pc{color:var(--teal)}
+  .theme-omnione .modal{background:#0a2229;border:1px solid rgba(53,227,242,.45);box-shadow:0 0 44px rgba(53,227,242,.18),0 30px 70px rgba(0,0,0,.5)}
+  .om-tabs button{font:inherit;background:none;border:none;cursor:pointer;display:inline-flex;align-items:center;font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--om-fg2);padding:6px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+  .om-tabs button:hover{color:var(--om-fg);border-bottom-color:rgba(53,227,242,.5)}
+  .om-tabs button[aria-current="page"]{color:var(--om-accent);border-bottom-color:var(--om-accent);text-shadow:0 0 14px rgba(53,227,242,.45)}
+  .foot{margin-top:24px}
+  .theme-omnione .lead-badge{color:#052027}
+  .overlay{z-index:60}
+  @media (max-width:640px){ .om-tabs button{font-size:12px;letter-spacing:.1em} .theme-omnione .panel{padding:18px} }
+</style>
+<style>
+/* omnione-look.css, copied whole from projects/media-marketing/brand-kit/app-look-example/ (do not edit here) */
+/* AIM in the omnione.world look (Media/Marketing, 2026-10-12; first pass 2026-10-04, item 59).
+   The look is Media/Marketing's; what AIM does is the AIM lane's, and nothing here changes it.
+   This file is the worked example every app copies: the site's tokens, the site's top bar and footer,
+   the lit-corner frame, Orbitron labels, the site's buttons, the glow and the floating dots.
+   Styling only. Plain CSS outside Tailwind's layers, so it wins over the utility classes without !important. */
+
+.theme-omnione {
+  --om-bg: #06151A; --om-fg: #E4F6F8; --om-fg2: rgba(228,246,248,.74); --om-fg3: rgba(228,246,248,.48);
+  --om-accent: #35E3F2; --om-hair: rgba(228,246,248,.12); --om-rim: rgba(53,227,242,.35); --om-r: 12px;
+  --background: var(--om-bg);
+  --foreground: var(--om-fg);
+  --card: rgba(6,21,26,.62);
+  --card-foreground: var(--om-fg2);
+  --popover: #0a2229;
+  --popover-foreground: var(--om-fg);
+  --primary: var(--om-accent);
+  --primary-foreground: #04222a;
+  --secondary: rgba(53,227,242,.08);
+  --secondary-foreground: var(--om-fg);
+  --muted: rgba(53,227,242,.06);
+  --sh-muted: rgba(53,227,242,.06);
+  --muted-foreground: var(--om-fg2);
+  --accent: rgba(53,227,242,.10);
+  --sh-accent: rgba(53,227,242,.10);
+  --accent-foreground: var(--om-fg);
+  --border: var(--om-rim);
+  --input: rgba(53,227,242,.35);
+  --ring: var(--om-accent);
+  --radius: 12px;
+  --sans: 'Work Sans', system-ui, sans-serif;
+  --serif: 'Orbitron', system-ui, sans-serif;
+  background: var(--om-bg);
+  color: var(--om-fg2);
+  font-family: 'Work Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  color-scheme: dark;
+  position: relative;
+  isolation: isolate;
+}
+html:has(body.theme-omnione) { background: #06151A; }
+
+/* ---------- the ground: the site's glow and its floating dots, behind everything ---------- */
+.om-glow { position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background:
+    radial-gradient(60vw 60vw at 30% -10%, rgba(53,227,242,.13), transparent 60%),
+    radial-gradient(70vw 70vw at 110% 120%, rgba(10,52,62,.95), transparent 60%); }
+.om-dotfield { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.om-dotfield i { position: absolute; border-radius: 50%; background: #e9fffb;
+  box-shadow: 0 0 6px 2px rgba(95,224,208,.85), 0 0 16px 5px rgba(95,224,208,.35);
+  animation: om-dot-float ease-in-out infinite alternate, om-dot-glow 7s ease-in-out infinite; }
+.om-dotfield i.g { background: #fff4d6; box-shadow: 0 0 6px 2px rgba(231,193,90,.85), 0 0 16px 5px rgba(231,193,90,.3); }
+@keyframes om-dot-float { 0%{transform:translate(0,0)} 33%{transform:translate(var(--dx),calc(var(--dy) * -.6))} 66%{transform:translate(calc(var(--dx) * -.5),var(--dy))} 100%{transform:translate(calc(var(--dx) * .4),calc(var(--dy) * -1))} }
+@keyframes om-dot-glow { 0%,100%{opacity:.35} 50%{opacity:.9} }
+@media (prefers-reduced-motion: reduce) { .om-dotfield i { animation: none; opacity: .6; } }
+
+/* ---------- the site's top bar: moving emblem, OmniOne wordmark, the way back ---------- */
+.om-bar { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 30px; background: rgba(6,21,26,.78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--om-hair); }
+.om-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--om-fg); }
+.om-brand video, .om-brand img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 18px rgba(53,227,242,.35); }
+.om-brand span { font-family: 'Orbitron', system-ui, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: .02em; }
+.om-uplink { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--om-fg); opacity: .85;
+  text-decoration: none; border-bottom: 1px solid rgba(53,227,242,.5); padding-bottom: 2px; }
+.om-uplink:hover { opacity: 1; color: var(--om-accent); }
+
+/* ---------- the app's own name and rooms, under the bar ---------- */
+.om-apphead { width: 100%; max-width: 1100px; margin: 0 auto; padding: 34px 30px 0; }
+.om-eyebrow { font-size: 12.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--om-accent); margin: 0 0 14px; }
+.om-tabs { display: flex; flex-wrap: wrap; gap: 6px 26px; list-style: none; margin: 0; padding: 0 0 14px; border-bottom: 1px solid var(--om-hair); }
+.om-tabs a { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--om-fg2); text-decoration: none; padding: 6px 0; border-bottom: 1px solid transparent; transition: color .2s, border-color .2s; }
+.om-tabs a svg { width: 15px; height: 15px; opacity: .8; }
+.om-tabs a:hover { color: var(--om-fg); border-bottom-color: rgba(53,227,242,.5); }
+.om-tabs a[aria-current="page"] { color: var(--om-accent); border-bottom-color: var(--om-accent); text-shadow: 0 0 14px rgba(53,227,242,.45); }
+
+.om-main { width: 100%; max-width: 1100px; margin: 0 auto; padding: 36px 30px 80px; flex: 1; }
+
+/* ---------- headings: the site's display face, uppercase, the logo's teal with its glow ---------- */
+.theme-omnione h1, .theme-omnione h2, .theme-omnione h3, .theme-omnione h4, .theme-omnione .font-heading {
+  font-family: 'Orbitron', system-ui, sans-serif; font-weight: 700; letter-spacing: .03em; color: var(--om-accent);
+  text-shadow: 0 0 20px rgba(53,227,242,.38), 0 0 46px rgba(53,227,242,.16); }
+.om-main h1 { font-size: clamp(30px, 4.6vw, 54px); line-height: 1.1; text-transform: uppercase; margin-bottom: 18px; text-wrap: balance; }
+.om-main h1 + p[class*="max-w-2xl"] { position: relative; max-width: 860px; padding: 26px 34px; font-size: 18px; line-height: 1.7; color: var(--om-fg2);
+  border: 1px solid rgba(53,227,242,.6); border-radius: var(--om-r); background: rgba(6,21,26,.62); backdrop-filter: blur(6px);
+  background-image:
+    linear-gradient(var(--om-accent),var(--om-accent)), linear-gradient(var(--om-accent),var(--om-accent)),
+    linear-gradient(var(--om-accent),var(--om-accent)), linear-gradient(var(--om-accent),var(--om-accent)),
+    linear-gradient(var(--om-accent),var(--om-accent)), linear-gradient(var(--om-accent),var(--om-accent)),
+    linear-gradient(var(--om-accent),var(--om-accent)), linear-gradient(var(--om-accent),var(--om-accent));
+  background-size: 18px 2px, 2px 18px, 18px 2px, 2px 18px, 18px 2px, 2px 18px, 18px 2px, 2px 18px;
+  background-position: 0 0, 0 0, 100% 0, 100% 0, 0 100%, 0 100%, 100% 100%, 100% 100%;
+  background-repeat: no-repeat; }
+
+/* ---------- cards: the site's hairline teal frame ---------- */
+.theme-omnione [data-slot="card"] { border-radius: var(--om-r); background: rgba(6,21,26,.62); backdrop-filter: blur(6px);
+  box-shadow: inset 0 0 0 1px var(--om-rim); padding-top: 22px; padding-bottom: 22px; gap: 14px; color: var(--om-fg2);
+  transition: box-shadow .35s; }
+.theme-omnione [data-slot="card"]:hover { box-shadow: inset 0 0 0 1px rgba(53,227,242,.6), 0 0 34px rgba(53,227,242,.12); }
+.theme-omnione [data-slot="card-header"], .theme-omnione [data-slot="card-content"], .theme-omnione [data-slot="card-footer"] { padding-left: 24px; padding-right: 24px; }
+.theme-omnione [data-slot="card-title"] { font-family: 'Orbitron', system-ui, sans-serif; font-size: 14px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--om-accent); text-shadow: 0 0 14px rgba(53,227,242,.3); }
+.theme-omnione [data-slot="card-title"] svg { width: 16px; height: 16px; }
+.theme-omnione [data-slot="card-description"] { font-size: 15px; line-height: 1.65; color: var(--om-fg2); }
+.theme-omnione [data-slot="card"] [data-slot="card"] { background: rgba(53,227,242,.03); }
+
+/* ---------- buttons: the site's buttons ---------- */
+.theme-omnione [data-slot="button"], .theme-omnione a[class*="inline-flex"][class*="rounded-lg"] {
+  height: auto; min-height: 40px; padding: 9px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; letter-spacing: .01em;
+  transition: box-shadow .25s, background .25s, color .25s, transform .15s; }
+.theme-omnione [data-slot="button"][class*="bg-primary"], .theme-omnione a[class*="bg-primary"] {
+  background: var(--om-accent); color: #04222a; box-shadow: 0 0 18px rgba(53,227,242,.35); }
+.theme-omnione [data-slot="button"][class*="bg-primary"]:hover, .theme-omnione a[class*="bg-primary"]:hover {
+  background: #6cecf6; box-shadow: 0 0 28px rgba(53,227,242,.55); }
+.theme-omnione [data-slot="button"][class*="border-border"], .theme-omnione a[class*="border-border"],
+.theme-omnione [data-slot="button"][class*="bg-secondary"] {
+  background: rgba(6,21,26,.7); color: var(--om-fg); border: 1px solid rgba(53,227,242,.55); box-shadow: 0 0 14px rgba(53,227,242,.14); }
+.theme-omnione [data-slot="button"][class*="border-border"]:hover, .theme-omnione a[class*="border-border"]:hover,
+.theme-omnione [data-slot="button"][class*="bg-secondary"]:hover { border-color: var(--om-accent); box-shadow: 0 0 22px rgba(53,227,242,.3); color: var(--om-accent); }
+.theme-omnione [data-slot="button"][class*="hover:bg-muted"]:not([class*="border-border"]):not([class*="bg-primary"]) {
+  min-height: 34px; padding: 6px 10px; background: transparent; box-shadow: none; color: var(--om-fg2); font-weight: 500; }
+.theme-omnione [data-slot="button"][class*="hover:bg-muted"]:not([class*="border-border"]):hover { color: var(--om-accent); background: rgba(53,227,242,.08); }
+.theme-omnione [data-slot="button"]:disabled { opacity: .4; }
+
+/* ---------- fields ---------- */
+.theme-omnione input:not([type="range"]):not([type="checkbox"]):not([type="radio"]), .theme-omnione textarea,
+.theme-omnione [data-slot="select-trigger"] {
+  min-height: 44px; border-radius: 10px; background: rgba(0,0,0,.28); color: var(--om-fg); border: 1px solid rgba(53,227,242,.3);
+  padding-left: 14px; font-size: 15px; }
+.theme-omnione input::placeholder, .theme-omnione textarea::placeholder { color: var(--om-fg3); }
+.theme-omnione input:focus, .theme-omnione textarea:focus { border-color: var(--om-accent); box-shadow: 0 0 0 3px rgba(53,227,242,.18); outline: none; }
+.theme-omnione label, .theme-omnione [data-slot="label"] { color: var(--om-fg); font-size: 13px; letter-spacing: .06em; }
+.theme-omnione [data-slot="slider-range"], .theme-omnione [data-slot="slider-indicator"] { background: var(--om-accent); box-shadow: 0 0 10px rgba(53,227,242,.5); }
+.theme-omnione [data-slot="slider-thumb"] { border-color: var(--om-accent); background: #e9fffb; box-shadow: 0 0 12px rgba(53,227,242,.6); }
+.theme-omnione [data-slot="badge"] { border-radius: 999px; border: 1px solid rgba(53,227,242,.4); background: rgba(53,227,242,.08); color: var(--om-fg);
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+.theme-omnione [data-slot="dialog-content"], .theme-omnione [data-slot="sheet-content"], .theme-omnione [data-slot="dropdown-menu-content"], .theme-omnione [data-slot="select-content"] {
+  background: #0a2229; border: 1px solid rgba(53,227,242,.45); box-shadow: 0 0 44px rgba(53,227,242,.18), 0 30px 70px rgba(0,0,0,.5); color: var(--om-fg); }
+.theme-omnione [data-slot="separator"] { background: var(--om-hair); }
+.theme-omnione p, .theme-omnione li, .theme-omnione td, .theme-omnione span { color: inherit; }
+.theme-omnione a { color: inherit; }
+.theme-omnione .bg-white { background: rgba(6,21,26,.62); }
+
+/* ---------- the site's footer ---------- */
+.om-foot { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 46px 20px 54px; border-top: 1px solid var(--om-hair); background: rgba(3,12,15,.6); }
+.om-foot a { font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--om-fg2); text-decoration: none; border-bottom: 1px solid rgba(53,227,242,.5); padding-bottom: 3px; }
+.om-foot a:hover { color: var(--om-accent); }
+
+/* ---------- phones ---------- */
+@media (max-width: 640px) {
+  .om-bar { padding: 10px 16px; }
+  .om-brand video, .om-brand img { width: 40px; height: 40px; }
+  .om-apphead { padding: 22px 16px 0; }
+  .om-tabs { gap: 4px 18px; }
+  .om-tabs a { font-size: 12px; letter-spacing: .1em; }
+  .om-main { padding: 26px 16px 60px; }
+  .om-main h1 + p[class*="max-w-2xl"] { padding: 20px 20px; font-size: 16px; }
+  .theme-omnione [data-slot="card-header"], .theme-omnione [data-slot="card-content"], .theme-omnione [data-slot="card-footer"] { padding-left: 18px; padding-right: 18px; }
+}
+
 </style>
 </head>
-<body>
-<div class="wrap">
-  <div class="appbar">
-    <div class="logo"><div class="mark"></div><b>ACT&nbsp;Resolution</b><span>value-based decision resolution</span></div>
-    <div class="canon-tag">values&nbsp;=&nbsp;<b>9 Value Clusters</b>&nbsp;(canon)</div>
-  </div>
-
+<body class="theme-omnione">
+<div class="om-glow" aria-hidden="true"></div>
+<div class="om-dotfield" id="omDots" aria-hidden="true"></div>
+<header class="om-bar">
+  <a class="om-brand" href="https://omnione.world/">
+    <video src="https://omnione.world/assets/logos/omnione-emblem-moving.webm" autoplay muted loop playsinline aria-hidden="true"></video>
+    <span>OmniOne</span>
+  </a>
+  <a class="om-uplink" href="https://omnione.world/tools/">All tools</a>
+</header>
+<div class="om-apphead">
+  <p class="om-eyebrow">ACT Resolution, the decision wheel</p>
+  <nav aria-label="Primary">
+    <ul class="om-tabs">
+      <li><button type="button" data-view="v-wheel" aria-current="page" onclick="show('v-wheel')">Wheel</button></li>
+      <li><button type="button" data-view="v-setup" onclick="show('v-setup')">Set up</button></li>
+      <li><button type="button" data-view="v-result" onclick="finish()">Resolution</button></li>
+    </ul>
+  </nav>
+</div>
+<main class="om-main">
   <div class="panel">
 
     <!-- ============ WHEEL (also the landing demo) ============ -->
@@ -193,14 +406,14 @@
       <div class="demo-banner" id="demoBanner">
         <div class="txt">
           <span class="badge">Live demo</span>
-          <h2>This is a worked example — explore the wheel.</h2>
+          <h2>This is a worked example. Explore the wheel.</h2>
           <p>The 9 spokes are our <b>Value Clusters</b>. The three rings are perspectives on them:
             <b style="color:var(--ring-me)">self</b> (inner), the
             <b style="color:var(--ring-eco)">ecosystem</b> (middle), the
             <b style="color:var(--ring-world)">world</b> (outer). Click a name on the rim to read that value.</p>
           <div class="steps">
             <div class="step"><b>1</b> Pick an option (top)</div>
-            <div class="step"><b>2</b> Click a value — read it, mark alignment</div>
+            <div class="step"><b>2</b> Click a value, read it, mark alignment</div>
             <div class="step"><b>3</b> See the ranking</div>
           </div>
         </div>
@@ -238,7 +451,7 @@
           <div class="card" id="valCard">
             <div class="ring-of" id="vcRing" style="color:var(--ring-me)">FROM YOUR VIEW</div>
             <h3 id="vcName">Click a value to begin</h3>
-            <p class="def" id="vcDef">The 9 wedges are the ecosystem's Value Clusters. Select one — you'll see what
+            <p class="def" id="vcDef">The 9 wedges are the ecosystem's Value Clusters. Select one: you'll see what
               it means and its synonyms, and can mark whether the current option aligns with it.</p>
             <div class="chips" id="vcChips"></div>
             <button class="moreBtn" id="moreBtn" style="display:none" onclick="openValueInfo()">ⓘ Full meaning + how it applies →</button>
@@ -248,19 +461,19 @@
                 <button class="btn yes" id="btnYes" onclick="answer(true)">Aligns ✓</button>
                 <button class="btn no"  id="btnNo"  onclick="answer(false)">Doesn't ✕</button>
               </div>
-              <textarea class="cmt" id="vcComment" placeholder="Optional — why? (your own score is just aligns / doesn't; a reason counts when everyone's scores are combined)"></textarea>
+              <textarea class="cmt" id="vcComment" placeholder="Optional: why? (your own score is just aligns / doesn't; a reason counts when everyone's scores are combined)"></textarea>
               <div class="walk-nav" id="walkNav" style="display:none">
                 <button class="btn ghost" style="padding:8px 14px;font-size:13px" onclick="walk(-1)">← Prev</button>
                 <div class="prog" id="walkProg"></div>
                 <button class="btn primary" style="padding:8px 14px;font-size:13px" onclick="walk(1)">Next →</button>
               </div>
             </div>
-            <p class="explore-note" id="exploreNote">Free-explore mode — read any value. Switch to the guided
+            <p class="explore-note" id="exploreNote">Free-explore mode: read any value. Switch to the guided
               walkthrough to be taken value by value.</p>
           </div>
 
           <div class="card rank">
-            <h3>Live ranking <span style="font-weight:400;color:var(--ink-faint);font-size:12px">— by alignment</span></h3>
+            <h3>Live ranking <span style="font-weight:400;color:var(--ink-faint);font-size:12px">by alignment</span></h3>
             <div id="ranking"></div>
             <div class="brk" id="rankBrk"></div>
           </div>
@@ -268,7 +481,7 @@
       </div>
 
       <div class="evbar">
-        <div class="t"><b>⛔ Scientific evidence?</b> If solid evidence bears on this, stop and enter it —
+        <div class="t"><b>⛔ Scientific evidence?</b> If solid evidence bears on this, stop and enter it, and
           it reopens the decision and re-runs it on the new evidence.</div>
         <button class="btn danger" style="padding:9px 15px;font-size:13px" onclick="openEvidence()">Stop &amp; add evidence</button>
       </div>
@@ -287,22 +500,22 @@
       <p class="eyebrow">Do it for your organization</p>
       <h1>Set up your comparison.</h1>
       <p class="lead">Name the options you're choosing between. The 9 <b>Value Clusters</b> below are our canon
-        set (edit or add if you need to). Each is rated three ways on the wheel — from your view, the
+        set (edit or add if you need to). Each is rated three ways on the wheel: from your view, the
         ecosystem's, and the world's.</p>
 
       <label class="f">The options you're comparing</label>
       <div class="rows" id="optRows"></div>
       <button class="add" onclick="addOpt()">+ Add an option</button>
 
-      <label class="f" style="margin-top:22px">The Value Clusters <span style="color:var(--ink-faint);font-weight:400">— canon set, editable</span></label>
+      <label class="f" style="margin-top:22px">The Value Clusters <span style="color:var(--ink-faint);font-weight:400">(canon set, editable)</span></label>
       <div class="rows" id="clusterRows"></div>
       <button class="add" onclick="addCluster()">+ Add value cluster</button>
 
       <div class="ring-note">
-        <div class="p"><span class="d" style="background:var(--ring-me)"></span><b>Inner ring</b> — your view</div>
-        <div class="p"><span class="d" style="background:var(--ring-eco)"></span><b>Middle ring</b> — ecosystem's view</div>
-        <div class="p"><span class="d" style="background:var(--ring-world)"></span><b>Outer ring</b> — world's view</div>
-        <div style="flex:1;min-width:180px">Same clusters, three perspectives — you answer each one three times.</div>
+        <div class="p"><span class="d" style="background:var(--ring-me)"></span><b>Inner ring</b>: your view</div>
+        <div class="p"><span class="d" style="background:var(--ring-eco)"></span><b>Middle ring</b>: ecosystem's view</div>
+        <div class="p"><span class="d" style="background:var(--ring-world)"></span><b>Outer ring</b>: world's view</div>
+        <div style="flex:1;min-width:180px">Same clusters, three perspectives: you answer each one three times.</div>
       </div>
 
       <div class="actions">
@@ -332,9 +545,14 @@
 
   <p class="foot">
     <b>ACT Resolution</b> · Module #1 of the OmniOne/NEOS app family · values from the 9 <b>Value Clusters</b> (canon/01).<br/>
-    Standalone demo — plugs into <b>NEOS Den</b> via <span class="kbd">ACTResolution.mount(el, {options, clusters, onResolve})</span>.
+    Plugs into <b>NEOS Den</b> via <span class="kbd">ACTResolution.mount(el, {options, clusters, onResolve, autostart})</span>.
   </p>
-</div>
+</main>
+<footer class="om-foot">
+  <a href="https://omnione.world/tools/">Tools and apps</a>
+  <a href="https://omnione.world/contact/">Contact us</a>
+  <a href="https://omnione.world/site-map/">Site map</a>
+</footer>
 
 <!-- value-info modal -->
 <div class="overlay" id="valOverlay">
@@ -355,13 +573,13 @@
 <!-- evidence modal -->
 <div class="overlay" id="evOverlay">
   <div class="modal">
-    <p class="eyebrow" style="color:var(--red)">Scientific evidence — stop &amp; re-run</p>
+    <p class="eyebrow" style="color:var(--red)">Scientific evidence: stop &amp; re-run</p>
     <h2>What does the evidence change?</h2>
     <p class="lead" style="font-size:14px">Evidence overrides opinion. Enter it, and the decision reopens so it
       can be re-evaluated in light of it.</p>
     <label class="f">Which option does this bear on?</label>
     <div id="evOptPick" class="opt-tabs" style="justify-content:flex-start"></div>
-    <label class="f">The claim — what the evidence shows</label>
+    <label class="f">The claim: what the evidence shows</label>
     <textarea id="evClaim" placeholder="e.g. Peer-reviewed data shows option B fails on regeneration."></textarea>
     <label class="f">The evidence / source <span style="color:var(--red)">*required</span></label>
     <textarea id="evSource" placeholder="Study, dataset, citation, link…"></textarea>
@@ -375,22 +593,22 @@
 
 <script>
 /* ====================================================================
-   ACT Resolution — standalone core + module contract.
+   ACT Resolution, standalone core + module contract.
    Values = the 9 canon Value Clusters. 3 rings = perspectives (You /
    Ecosystem / World) on the SAME clusters, radially aligned.
    ==================================================================== */
 
-/* ---- the 9 Value Clusters (canon/01 — def + synonyms verbatim) ---- */
+/* ---- the 9 Value Clusters (canon/01, def + synonyms verbatim) ---- */
 const CANON_CLUSTERS = [
-  {label:'Integrity & Honor',                short:'Integrity',    def:'Reliability of word, trust, ethical consistency.',      syn:['integrity','honesty','honor','accountability','keeping agreements'], apply:'Agreements are the ecosystem’s backbone — honoring your word is what makes the whole trustworthy.'},
-  {label:'Consent, Agency & Sovereignty',    short:'Consent',      def:'Freedom of choice and non-coercion.',                   syn:['consent','autonomy','sovereignty','voluntary participation','right to exit'], apply:'No one is bound without agreeing; sovereignty and the right to exit are protected — no urgency or pressure.'},
-  {label:'Fairness, Equity & Reciprocity',   short:'Fairness',     def:'Just treatment relative to contribution.',              syn:['fairness','equity','reciprocity','proportionality','non-exploitation'], apply:'Contribution is reciprocated, not extracted — surplus returns to the commons rather than to private profit.'},
+  {label:'Integrity & Honor',                short:'Integrity',    def:'Reliability of word, trust, ethical consistency.',      syn:['integrity','honesty','honor','accountability','keeping agreements'], apply:'Agreements are the ecosystem’s backbone, honoring your word is what makes the whole trustworthy.'},
+  {label:'Consent, Agency & Sovereignty',    short:'Consent',      def:'Freedom of choice and non-coercion.',                   syn:['consent','autonomy','sovereignty','voluntary participation','right to exit'], apply:'No one is bound without agreeing; sovereignty and the right to exit are protected, no urgency or pressure.'},
+  {label:'Fairness, Equity & Reciprocity',   short:'Fairness',     def:'Just treatment relative to contribution.',              syn:['fairness','equity','reciprocity','proportionality','non-exploitation'], apply:'Contribution is reciprocated, not extracted, surplus returns to the commons rather than to private profit.'},
   {label:'Transparency & Truth',             short:'Transparency', def:'Shared access to information for trust.',                syn:['transparency','clarity','truth-telling','visibility'], apply:'Shared works are 100% transparent; decisions and money are recorded where members can see.'},
-  {label:'Collaboration & Collective Intelligence', short:'Collaboration', def:'Thinking and acting together coherently.',       syn:['collaboration','coordination','shared sense-making','co-creation'], apply:'ACT and shared sense-making — the team moves coherently, never by solo action.'},
-  {label:'Stewardship & Responsibility',     short:'Stewardship',  def:'Care for resources, roles, and long-term impacts.',      syn:['stewardship','responsibility','caretaking','sustainability','works/IP','roles'], apply:'Responsibility without ownership capture — you look after resources, you don’t privatize them.'},
+  {label:'Collaboration & Collective Intelligence', short:'Collaboration', def:'Thinking and acting together coherently.',       syn:['collaboration','coordination','shared sense-making','co-creation'], apply:'ACT and shared sense-making, the team moves coherently, never by solo action.'},
+  {label:'Stewardship & Responsibility',     short:'Stewardship',  def:'Care for resources, roles, and long-term impacts.',      syn:['stewardship','responsibility','caretaking','sustainability','works/IP','roles'], apply:'Responsibility without ownership capture, you look after resources, you don’t privatize them.'},
   {label:'Learning, Adaptability & Evolution', short:'Learning',   def:'Capacity to evolve without collapse.',                   syn:['learning','adaptability','experimentation','feedback','iteration'], apply:'Feedback loops and coachability let the system evolve without breaking.'},
-  {label:'Belonging, Dignity & Participation', short:'Belonging',  def:'Relational safety and meaningful inclusion.',            syn:['belonging','dignity','inclusion','participation','mutual respect'], apply:'Solutionary Culture and mutual respect — conflict is repaired, people aren’t discarded.'},
-  {label:'Life, Health & Regeneration',      short:'Life',         def:'Thriving of life systems beyond survival.',              syn:['health','regeneration','vitality','ecological well-being','resilience'], apply:'Regeneration over extraction — human rights and ecological well-being come first.'}
+  {label:'Belonging, Dignity & Participation', short:'Belonging',  def:'Relational safety and meaningful inclusion.',            syn:['belonging','dignity','inclusion','participation','mutual respect'], apply:'Solutionary Culture and mutual respect, conflict is repaired, people aren’t discarded.'},
+  {label:'Life, Health & Regeneration',      short:'Life',         def:'Thriving of life systems beyond survival.',              syn:['health','regeneration','vitality','ecological well-being','resilience'], apply:'Regeneration over extraction, human rights and ecological well-being come first.'}
 ];
 
 const RINGS = [
@@ -401,7 +619,7 @@ const RINGS = [
 // INDIVIDUAL score = simple alignment: Aligns = 1, Doesn't = 0. All-yes = 100%.
 // A reason is OPTIONAL and does NOT change your own %.
 // The reasoned weighting (a reason = ×2, a reasoned "Doesn't" = −1) applies ONLY in
-// GROUP aggregation across participants — done host-side in NEOS Den, not here.
+// GROUP aggregation across participants, done host-side in NEOS Den, not here.
 const GROUP_WEIGHTING = { yes:1, yesExplained:2, no:0, noExplained:-1 };  // host-side only; detail[] carries per-mark comments
 function markScore(a){ return (a && a.aligned) ? 1 : 0; }
 
@@ -426,7 +644,13 @@ const ACTResolution = {
 };
 window.ACTResolution = ACTResolution;
 
-function show(id){ document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id)); window.scrollTo({top:0,behavior:'smooth'}); }
+function show(id){ document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));
+  document.querySelectorAll('.om-tabs button').forEach(t=>{ if(t.dataset.view===id) t.setAttribute('aria-current','page'); else t.removeAttribute('aria-current'); });
+  window.scrollTo({top:0,behavior:'smooth'}); }
+/* the site's floating dots: same seed and count as omnione.world (decoration only) */
+(function(){ const f=document.getElementById('omDots'); if(!f) return; let seed=26; const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  for(let i=0;i<46;i++){ const size=(2.4+rnd()*2.8).toFixed(1), dur=(16+rnd()*22).toFixed(1), dx=Math.round((rnd()-.5)*120), dy=Math.round(30+rnd()*90), left=(rnd()*100).toFixed(2), top=(rnd()*100).toFixed(2), g1=(5+rnd()*6).toFixed(1), d1=(rnd()*Number(dur)).toFixed(1), d2=(rnd()*6).toFixed(1);
+    const d=document.createElement('i'); if(i%7===3) d.className='g'; d.style.cssText='left:'+left+'%;top:'+top+'%;width:'+size+'px;height:'+size+'px;--dx:'+dx+'px;--dy:'+dy+'px;animation-duration:'+dur+'s,'+g1+'s;animation-delay:-'+d1+'s,-'+d2+'s'; f.appendChild(d); } })();
 
 /* ---- setup rendering --------------------------------------------- */
 function addOpt(label=''){ state.options.push({id:'o'+Date.now().toString(36)+Math.floor(Math.random()*99),label}); renderOptRows(); }
@@ -526,7 +750,7 @@ function renderWheel(){
   const ns='http://www.w3.org/2000/svg';
   const cls=activeClusters(); const n=cls.length; if(!n) return; const step=360/n;
   const defs=document.createElementNS(ns,'defs'); svg.appendChild(defs);
-  // three rating rings — Self (inner) · Ecosystem · World (outer); perspective word written in each wedge
+  // three rating rings, Self (inner) · Ecosystem · World (outer); perspective word written in each wedge
   RINGS.forEach(r=>{
     const [ri,ro]=BANDS[r.id]; const rMid=(ri+ro)/2;
     cls.forEach((c,i)=>{
@@ -550,7 +774,7 @@ function renderWheel(){
       svg.appendChild(wt);
     });
   });
-  // outer NAME ring — black band, white bold curved labels; the only info-click
+  // outer NAME ring, black band, white bold curved labels; the only info-click
   const [nri,nro]=BANDS.name; const nMid=(nri+nro)/2;
   cls.forEach((c,i)=>{
     const a0=i*step+0.6, a1=(i+1)*step-0.6;
@@ -558,7 +782,7 @@ function renderWheel(){
     seg.setAttribute('fill','#04070b'); seg.setAttribute('stroke','var(--line2)'); seg.setAttribute('stroke-width','1');
     seg.setAttribute('class','nameseg');
     seg.onclick=(function(cid){return function(){openValueInfo(cid);};})(c.id);
-    const tt=document.createElementNS(ns,'title'); tt.textContent=c.label+' — click for details'; seg.appendChild(tt);
+    const tt=document.createElementNS(ns,'title'); tt.textContent=c.label+': click for details'; seg.appendChild(tt);
     svg.appendChild(seg);
     // curved text along the arc (letters follow the ring; bottom ones read upside-down)
     const pad=2.2, b0=i*step+pad, b1=(i+1)*step-pad;
@@ -585,7 +809,7 @@ function renderWheel(){
   t.setAttribute('text-anchor','middle');t.setAttribute('font-size','13');t.setAttribute('font-weight','700');
   t.setAttribute('fill','var(--teal)');t.textContent=scorePct(state.currentOpt)+'%';svg.appendChild(t);
   const opt=state.options.find(o=>o.id===state.currentOpt);
-  document.getElementById('caption').innerHTML='Evaluating <b>'+(opt?opt.label:'')+'</b> — <span class="pc">'+scorePct(state.currentOpt)+'% aligned</span> across self · ecosystem · world';
+  document.getElementById('caption').innerHTML='Evaluating <b>'+(opt?opt.label:'')+'</b>: <span class="pc">'+scorePct(state.currentOpt)+'% aligned</span> across self · ecosystem · world';
 }
 
 /* ---- select + answer --------------------------------------------- */
@@ -601,7 +825,7 @@ function selectValue(ringId,clusterId){
   document.getElementById('moreBtn').style.display='none';
   document.getElementById('vcQ').style.display='block';
   document.getElementById('exploreNote').style.display=state.guided?'none':'block';
-  document.getElementById('vcAsk').innerHTML='Does <b>'+(opt?opt.label:'this option')+'</b> align with <b>'+(c.short||c.label)+'</b> — '+r.persp.toLowerCase()+'?';
+  document.getElementById('vcAsk').innerHTML='Does <b>'+(opt?opt.label:'this option')+'</b> align with <b>'+(c.short||c.label)+'</b>, '+r.persp.toLowerCase()+'?';
   const ans=state.answers[state.currentOpt]?.[ringId]?.[clusterId];
   document.getElementById('btnYes').classList.toggle('on', ans&&ans.aligned===true);
   document.getElementById('btnNo').classList.toggle('on', ans&&ans.aligned===false);
@@ -615,7 +839,7 @@ function clearCard(){
   document.getElementById('vcRing').textContent='FOR YOURSELF';
   document.getElementById('vcRing').style.color='var(--ring-me)';
   document.getElementById('vcName').textContent='Click a value to begin';
-  document.getElementById('vcDef').textContent='The 9 wedges are the ecosystem’s Value Clusters. Select one — you’ll see what it means and its synonyms, and can mark whether the current option aligns.';
+  document.getElementById('vcDef').textContent='The 9 wedges are the ecosystem’s Value Clusters. Select one: you’ll see what it means and its synonyms, and can mark whether the current option aligns.';
   document.getElementById('vcChips').innerHTML='';
   document.getElementById('moreBtn').style.display='none';
   document.getElementById('vcQ').style.display='none';
@@ -644,7 +868,7 @@ function openValueInfo(clusterId){
   const c=state.clusters.find(x=>x.id===cid); if(!c) return;
   document.getElementById('viRing').textContent='VALUE CLUSTER'; document.getElementById('viRing').style.color='var(--gold)';
   document.getElementById('viName').textContent=c.label||'Value cluster';
-  document.getElementById('viDef').textContent=c.def||'—';
+  document.getElementById('viDef').textContent=c.def||'';
   const synWrap=document.getElementById('viSynWrap');
   if(c.syn&&c.syn.length){ synWrap.style.display='block'; document.getElementById('viSyn').innerHTML=c.syn.map(s=>'<span class="chip">'+s+'</span>').join(''); } else synWrap.style.display='none';
   const apWrap=document.getElementById('viApplyWrap');
@@ -658,7 +882,7 @@ function toggleMode(){
   state.guided=!state.guided;
   document.getElementById('modeBtn').textContent=state.guided?'Free explore ●':'Guided walkthrough ▶';
   document.getElementById('wheelLead').textContent=state.guided
-    ? 'Guided — answer each value in turn: your ring first, then ecosystem, then world. Yes advances automatically.'
+    ? 'Guided: answer each value in turn: your ring first, then ecosystem, then world. Yes advances automatically.'
     : 'Pick an option, then click a value wedge to read it and mark whether that option aligns.';
   if(state.guided){ const idx=firstUnanswered(); walkTo(idx<0?0:idx); } else clearCard();
 }
@@ -706,7 +930,7 @@ function rankHtml(list){
 function renderRanking(){
   document.getElementById('ranking').innerHTML=rankHtml(ranked());
   const nn=state.evidence.length;
-  document.getElementById('rankBrk').textContent=nn?('⛔ '+nn+' evidence item(s) on record — ranking reflects re-evaluation.'):'';
+  document.getElementById('rankBrk').textContent=nn?('⛔ '+nn+' evidence item(s) on record, so the ranking reflects re-evaluation.'):'';
 }
 
 /* ---- evidence stop ----------------------------------------------- */
@@ -721,7 +945,7 @@ function selEv(btn){ document.querySelectorAll('#evOptPick .opt-tab').forEach(b=
 function closeEvidence(){ document.getElementById('evOverlay').classList.remove('on'); }
 function submitEvidence(){
   const source=document.getElementById('evSource').value.trim();
-  if(!source){ alert('Evidence requires a source — that’s the point of the stop.'); return; }
+  if(!source){ alert('Evidence requires a source. That’s the point of the stop.'); return; }
   const target=document.querySelector('#evOptPick .opt-tab.sel').dataset.ev;
   const claim=document.getElementById('evClaim').value.trim();
   state.evidence.push({optId:target,claim,source,ts:new Date().toISOString()});
@@ -729,7 +953,7 @@ function submitEvidence(){
   closeEvidence();
   const label=target==='all'?'all options':(state.options.find(o=>o.id===target)||{}).label;
   const b=document.getElementById('evBanner'); b.classList.add('on');
-  b.innerHTML='⛔ <b>Re-evaluation triggered.</b> New evidence logged for <b>'+label+'</b>. Its alignment has been cleared — walk it through again in light of the evidence.';
+  b.innerHTML='⛔ <b>Re-evaluation triggered.</b> New evidence logged for <b>'+label+'</b>. Its alignment has been cleared. Walk it through again in light of the evidence.';
   if(target!=='all') state.currentOpt=target;
   renderTabs(); renderWheel(); renderRanking(); clearCard(); if(state.guided) walkTo(0); emit();
 }
@@ -738,14 +962,14 @@ function submitEvidence(){
 function finish(){
   const list=ranked();
   document.getElementById('resLead').innerHTML = list.length && list[0].score>0
-    ? 'Most aligned: <b style="color:var(--teal)">'+list[0].label+'</b> at '+list[0].pct+'%. You declare the resolution — the ranking informs it.'
-    : 'No option scores yet — answer some values first.';
+    ? 'Most aligned: <b style="color:var(--teal)">'+list[0].label+'</b> at '+list[0].pct+'%. You declare the resolution; the ranking informs it.'
+    : 'No option scores yet. Answer some values first.';
   document.getElementById('ranking2').innerHTML=rankHtml(list);
   const ev=document.getElementById('evList');
   if(state.evidence.length){ ev.style.display='block';
     document.getElementById('evItems').innerHTML=state.evidence.map(e=>{
       const nm=e.optId==='all'?'All options':(state.options.find(o=>o.id===e.optId)||{}).label;
-      return '<div class="brk" style="font-size:12.5px;color:var(--ink-dim);margin-top:8px">⛔ <b>'+nm+'</b> — '+(e.claim||'(claim)')+'<br><span style="color:var(--ink-faint)">source: '+e.source+'</span></div>';
+      return '<div class="brk" style="font-size:12.5px;color:var(--ink-dim);margin-top:8px">⛔ <b>'+nm+'</b>: '+(e.claim||'(claim)')+'<br><span style="color:var(--ink-faint)">source: '+e.source+'</span></div>';
     }).join('');
   } else ev.style.display='none';
   emit(); show('v-result');
@@ -762,10 +986,10 @@ function emit(){
   ACTResolution.lastResult=result;
   const note=document.getElementById('emitNote');
   if(typeof ACTResolution.onResolve==='function'){ ACTResolution.onResolve(result); if(note) note.textContent='✓ result emitted to host via onResolve()'; }
-  else if(note) note.textContent='Standalone mode — result on ACTResolution.lastResult';
+  else if(note) note.textContent='Standalone mode: result on ACTResolution.lastResult';
 }
 function copyOut(){
-  const list=ranked(); let t='ACT RESOLUTION — value alignment (9 clusters × 3 perspectives)\n';
+  const list=ranked(); let t='ACT RESOLUTION: value alignment (9 clusters × 3 perspectives)\n';
   list.forEach((r,i)=>{ t+=(i+1)+'. '+r.label+'  '+r.pct+'%  ('+ringBreakdown(r.id)+')\n'; });
   if(state.evidence.length){ t+='\nEvidence:\n'; state.evidence.forEach(e=>{const nm=e.optId==='all'?'All':(state.options.find(o=>o.id===e.optId)||{}).label;t+=' ⛔ '+nm+': '+(e.claim||'')+' [source: '+e.source+']\n';}); }
   navigator.clipboard?.writeText(t);
